@@ -1,0 +1,14 @@
+run reddy/darken.py
+run reddy/clock.py
+run reddy/key.py
+run reddy/mouse.py
+run reddy/tokenmng.py
+run reddy/tuplestring.py
+run reddy/stgmng.py
+run reddy/usrmng.py
+run reddy/easytext.py
+run reddy/adminmng.py
+
+run reddy/themes.py
+runadmin reddy/lockscreen.py
+screen 1
