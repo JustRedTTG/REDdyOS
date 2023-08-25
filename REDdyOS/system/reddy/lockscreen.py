@@ -21,8 +21,8 @@ def init(dataV,lookupV):
   data = dataV
   lookup = lookupV
   pe = lookup.get("PGE")
-  timeT = pe.text.make('--:--', 'freesansbold.ttf', int(data.mS[0]/20), pe.math.center((0, data.center[1], data.center[0]/2, data.mS[1]/2)),(pe.colors.black, None))
-  nameT = pe.text.make('', 'freesansbold.ttf', int(data.mS[0]/20),data.center,(pe.colors.black, None))
+  timeT = pe.text.make('--:--', 'freesansbold.ttf', int(data.mS[0]/20), pe.math.center((0, data.display_rect.center[1], data.display_rect.center[0]/2, data.mS[1]/2)),(pe.colors.black, None))
+  nameT = pe.text.make('', 'freesansbold.ttf', int(data.mS[0]/20),data.display_rect.center,(pe.colors.black, None))
   tm = lookup.get("tokenmng")
   tm.load()
   settings = getS(tm.current_user)
@@ -44,7 +44,7 @@ def openUP():
   pe = lookup.get("PGE")
   ezt = lookup.get("EZtext")
   if localSettings.lock == 0:
-    text = ezt.fit("Login", pe.colors.black, (data.center[0] - int(data.mS[0] / 10 / 2), data.center[1] + int(data.mS[0] / 20 / 2), int(data.mS[0] / 10),int(data.mS[0] / 35)))
+    text = ezt.fit("Login", pe.colors.black, (data.display_rect.center[0] - int(data.mS[0] / 10 / 2), data.display_rect.center[1] + int(data.mS[0] / 20 / 2), int(data.mS[0] / 10),int(data.mS[0] / 35)))
 
 def unlock(code=""):
   tm = lookup.get("tokenmng")
@@ -90,7 +90,7 @@ def draw():
     keyM = lookup.get("key")
     mouseM = lookup.get("mouse")
     timeT.text = str(clock.hour())+":"+str(clock.minute())
-    timeT.original_pos = pe.math.center((0, data.center[1], data.center[0]/2, data.mS[1]/2))
+    timeT.original_pos = pe.math.center((0, data.display_rect.center[1], data.display_rect.center[0]/2, data.mS[1]/2))
     timeT.fontsize = int(data.mS[0]/20)
     timeT.init(timeT)
     pe.text.display(timeT)
@@ -99,7 +99,7 @@ def draw():
   elif d<data.mS[1]:
     clock = lookup.get("clock")
     timeT.text = str(clock.hour()) + ":" + str(clock.minute())
-    timeT.original_pos = pe.math.center((0, data.center[1]-d, data.center[0] / 2, data.mS[1] / 2-d))
+    timeT.original_pos = pe.math.center((0, data.display_rect.center[1]-d, data.display_rect.center[0] / 2, data.mS[1] / 2-d))
     timeT.fontsize = int(data.mS[0] / 20)
     timeT.init(timeT)
 
@@ -120,16 +120,16 @@ def draw():
     s.fill((0, 0, 0))
     pe.display.blit.rect(s, (rect[0], rect[1]))
 
-    #pe.draw.circle(pe.colors.white,(data.center[0],data.center[1]-int(data.mS[1] / 4)),int(data.mS[0] / 12),0)
+    #pe.draw.circle(pe.colors.white,(data.display_rect.center[0],data.display_rect.center[1]-int(data.mS[1] / 4)),int(data.mS[0] / 12),0)
     user = um.load.user(tm.current_user)
     if localSettings.pfp != "NONE":
-      lookup.get("EZimage").image(lookup.get("circlepfp").username(user.name), (int(data.mS[0] / 6), int(data.mS[0] / 6)), (data.center[0]-int(data.mS[0] / 12), data.center[1]-int(data.mS[1] / 4)-int(data.mS[0] / 12)))
+      lookup.get("EZimage").image(lookup.get("circlepfp").username(user.name), (int(data.mS[0] / 6), int(data.mS[0] / 6)), (data.display_rect.center[0]-int(data.mS[0] / 12), data.display_rect.center[1]-int(data.mS[1] / 4)-int(data.mS[0] / 12)))
     else:
-      lookup.get("EZimage").image(data.files + "reddy/icons/account.png", (int(data.mS[0] / 6), int(data.mS[0] / 6)), (data.center[0] - int(data.mS[0] / 12), data.center[1] - int(data.mS[1] / 4) - int(data.mS[0] / 12)))
+      lookup.get("EZimage").image(data.files + "reddy/icons/account.png", (int(data.mS[0] / 6), int(data.mS[0] / 6)), (data.display_rect.center[0] - int(data.mS[0] / 12), data.display_rect.center[1] - int(data.mS[1] / 4) - int(data.mS[0] / 12)))
     nameT.text = user.name
-    nameT.original_pos = data.center
+    nameT.original_pos = data.display_rect.center
     nameT.init(nameT)
     nameT.fontsize = int(data.mS[0] / 20)
     pe.text.display(nameT)
     if localSettings.lock == 0:
-      pe.button.rect((data.center[0]-int(data.mS[0] / 10/2),data.center[1]+int(data.mS[0] / 20/2),int(data.mS[0] / 10),int(data.mS[0] / 35)),(200,200,200),(100,100,100),text,action=unlock)
+      pe.button.rect((data.display_rect.center[0]-int(data.mS[0] / 10/2),data.display_rect.center[1]+int(data.mS[0] / 20/2),int(data.mS[0] / 10),int(data.mS[0] / 35)),(200,200,200),(100,100,100),text,action=unlock)

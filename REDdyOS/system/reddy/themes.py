@@ -24,11 +24,11 @@ def draw(red=None,red2=None,red3=None,red4=None,off=(0,0)):
   smol = int(data.mS[0] / 8)
   vsmol = int(data.mS[0] / 20)
   if data.theme == 0:
-    pe.draw.circle(red4,(data.center[0]+offx,data.center[1]+offy),full,0)
-    pe.draw.circle(red3,(data.center[0]+offx,data.center[1]+offy),half,0)
-    pe.draw.circle(red2,(data.center[0]+offx,data.center[1]+offy),smol,0)
-    pe.draw.line(red,(0,data.center[1]+offy),(data.mS[0]+offx,data.center[1]+offy),vsmol)
-    pe.draw.line(red,(data.center[0]+offx,0),(data.center[0]+offx,data.mS[1]+offy),vsmol)
+    pe.draw.circle(red4,(data.display_rect.center[0]+offx,data.display_rect.center[1]+offy),full,0)
+    pe.draw.circle(red3,(data.display_rect.center[0]+offx,data.display_rect.center[1]+offy),half,0)
+    pe.draw.circle(red2,(data.display_rect.center[0]+offx,data.display_rect.center[1]+offy),smol,0)
+    pe.draw.line(red,(0,data.display_rect.center[1]+offy),(data.mS[0]+offx,data.display_rect.center[1]+offy),vsmol)
+    pe.draw.line(red,(data.display_rect.center[0]+offx,0),(data.display_rect.center[0]+offx,data.mS[1]+offy),vsmol)
   elif data.theme == 1:
     ic = data.mS[1]/4
     y = offy
@@ -40,5 +40,5 @@ def draw(red=None,red2=None,red3=None,red4=None,off=(0,0)):
     y+=ic
     pe.draw.rect(red4,(offx,y,data.mS[0]+offy,ic), 0)
     y+=ic
-  #pe.draw.circle(pe.colors.black, (data.center[0] + offx, data.center[1] + offy), 5, 0)
+  #pe.draw.circle(pe.colors.black, (data.display_rect.center[0] + offx, data.display_rect.center[1] + offy), 5, 0)
   #pe.draw.rect(pe.colors.black, (offx, offy, data.mS[0], data.mS[1]), 15)

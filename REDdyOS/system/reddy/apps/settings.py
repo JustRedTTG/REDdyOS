@@ -65,8 +65,8 @@ def draw():
   lookup.get("mouse").removeoff()
   if screen > 1:
     data.mS = (data.mS[0]-250,data.mS[1]-25)
-    data.center = pe.math.center((0,0,data.mS[0],data.mS[1]))
-    #data.center = (data.center[0],data.center[1]-25)
+    data.display_rect.center = pe.math.center((0,0,data.mS[0],data.mS[1]))
+    #data.display_rect.center = (data.display_rect.center[0],data.display_rect.center[1]-25)
     lookup.get("DrawATheme").draw(off=(250,25))
     rect = (250, 25, data.mS[0], data.mS[1])
     s = pe.pygame.Surface((rect[2], rect[3]))
@@ -75,10 +75,10 @@ def draw():
     pe.display.blit.rect(s, (rect[0], rect[1]))
   #pe.draw.rect(pe.colors.pink,(250,25,data.mS[0],data.mS[1]),15)
   data.mS = pe.display.get.size()
-  data.center = (data.mS[0] / 2, data.mS[1] / 2)
+  data.display_rect.center = (data.mS[0] / 2, data.mS[1] / 2)
   pe.button.rect((data.mS[0]-40,0,40,20),pe.colors.red,pe.colors.pink,action=close)
   if screen == 0:
-    cubeyP = (data.center[0]-200,data.center[1])
+    cubeyP = (data.display_rect.center[0]-200,data.display_rect.center[1])
     screen=1
   elif screen == 1:
     pe.fill.full(pe.colors.white)
@@ -87,9 +87,9 @@ def draw():
         cubeyP = (cubeyP[0]-20,cubeyP[1])
       else:
         cubeyP = (cubeyP[0] + 20, cubeyP[1])
-      if cubeyT and cubeyP[0] < data.center[0]-200:
+      if cubeyT and cubeyP[0] < data.display_rect.center[0]-200:
         cubeyT = False
-      elif cubeyP[0] > data.center[0]+200:
+      elif cubeyP[0] > data.display_rect.center[0]+200:
         cubeyT = True
       pe.draw.rect(pe.colors.red,(cubeyP[0]-50,cubeyP[1]-50,100,100),0)
       pe.draw.line(pe.colors.black, (cubeyP[0]-40,cubeyP[1]-40),(cubeyP[0]-30,cubeyP[1]-20),10)
