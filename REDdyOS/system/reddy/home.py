@@ -23,7 +23,7 @@ def init(dataV,lookupV):
     apps.append([link.replace(".redlink",""),read[0],data.files+read[1].replace("%USER%",data.current_user)])
     f.close()
   commons = commonsV
-  y = data.mS[1] - 35
+  y = data.display_rect.height - 35
   return "home",9,2
 
 def start(app):
@@ -40,23 +40,23 @@ def drawApps(y):
 
 def draw():
   global y
-  size = data.mS[1]/1.5
+  size = data.display_rect.height/1.5
   if data.focus == "home":
     mouse = lookup.get("mouse")
-    if mouse.y() > data.mS[1]-size-35 and mouse.x() < data.mS[0]/3:
-      if y>data.mS[1]-size-35:
-        if (y-(data.mS[1]-size-35)/2)>data.mS[1]-size-35:
-          y-=(data.mS[1]-size-35)/2
+    if mouse.y() > data.display_rect.height-size-35 and mouse.x() < data.display_rect.width/3:
+      if y>data.display_rect.height-size-35:
+        if (y-(data.display_rect.height-size-35)/2)>data.display_rect.height-size-35:
+          y-=(data.display_rect.height-size-35)/2
         else:
           y-=10
       else:
-        y = data.mS[1]-size-35
+        y = data.display_rect.height-size-35
     else:
       data.focus = ""
     lookup.getapp("tskBAR").locked = True
-    pe.draw.rect(pe.colors.black,(0,data.mS[1]-size-35,data.mS[0]/3,size+35),1)
-    pe.draw.rect((0,0,0,100),(0,y,data.mS[0]/3,size+35),0)
+    pe.draw.rect(pe.colors.black,(0,data.display_rect.height-size-35,data.display_rect.width/3,size+35),1)
+    pe.draw.rect((0,0,0,100),(0,y,data.display_rect.width/3,size+35),0)
     drawApps(y)
   else:
-    y = data.mS[1] - 35
+    y = data.display_rect.height - 35
     lookup.getapp("tskBAR").locked = False

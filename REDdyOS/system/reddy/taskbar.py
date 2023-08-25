@@ -7,8 +7,8 @@ def init(dataV,lookupV):
   lookup = lookupV
   pe = lookup.get("PGE")
   mouse = lookup.get("mouse")
-  y = data.mS[1] - 5
-  Max = data.mS[1] - 35
+  y = data.display_rect.height - 5
+  Max = data.display_rect.height - 35
   Min = y
   return "tskBAR",10,2
 
@@ -24,7 +24,7 @@ def draw():
     elif not locked:
       if y<Min:
         y+=2
-    pe.draw.rect(pe.colors.gray,(0,y,data.mS[0],data.mS[1]-y),0)
+    pe.draw.rect(pe.colors.gray,(0,y,data.display_rect.width,data.display_rect.height-y),0)
     x = 0
     for app in data.apps:
       try:

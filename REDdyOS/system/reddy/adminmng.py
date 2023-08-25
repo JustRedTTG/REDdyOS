@@ -58,10 +58,10 @@ def call():
   if data.screen == 3:
     if admin != None:
       lookup.get("mouse").removeoff()
-      s = pe.pygame.Surface((data.mS[0], data.mS[1]))
+      s = pe.pygame.Surface((data.display_rect.width, data.display_rect.height))
       s.set_alpha(200)
       s.fill((0, 0, 0))
-      rect = (data.mS[0] / 2 - 225, data.mS[1] / 2 - 125, 450, 250)
+      rect = (data.display_rect.width / 2 - 225, data.display_rect.height / 2 - 125, 450, 250)
       pe.pygame.draw.rect(s,(255, 255, 255), rect, 0)
       lookup.get("DrawATheme").draw()
       pe.display.blit.rect(s, (0,0))
@@ -69,17 +69,17 @@ def call():
         icon = lookup.getapp(admin).commons.icon
       except:
         icon = data.files+"reddy/icons/admin.png"
-      lookup.get("EZimage").image(icon, (150, 150), (data.mS[0]/2-225,data.mS[1]/2-125))
+      lookup.get("EZimage").image(icon, (150, 150), (data.display_rect.width/2-225,data.display_rect.height/2-125))
       ezt = lookup.get("EZtext")
       try:
         title = lookup.getapp(admin).commons.title
       except:
         title = admin
-      pe.text.display(ezt.cram(title,pe.colors.black,(data.mS[0]/2-75,data.mS[1]/2-100,300,25)))
-      pe.text.display(ezt.fit("Wants admin privileges",pe.colors.black,(data.mS[0]/2-75,data.mS[1]/2-75,300,25)))
-      pe.button.rect((data.mS[0] / 2 - 225, data.mS[1] / 2 + 90, 225, 35),pe.colors.red,(255,50,50),action=declineapp,data=admin)
-      pe.button.rect((data.mS[0] / 2 + 225 - 35, data.mS[1] / 2 - 125, 35, 35),pe.colors.red,(255,50,50),action=declineapp,data="")
-      pe.button.rect((data.mS[0] / 2, data.mS[1] / 2 + 90, 225, 35),pe.colors.green,(50,255,50),action=acceptapp,data=key/lookup.get("math").pi)
+      pe.text.display(ezt.cram(title,pe.colors.black,(data.display_rect.width/2-75,data.display_rect.height/2-100,300,25)))
+      pe.text.display(ezt.fit("Wants admin privileges",pe.colors.black,(data.display_rect.width/2-75,data.display_rect.height/2-75,300,25)))
+      pe.button.rect((data.display_rect.width / 2 - 225, data.display_rect.height / 2 + 90, 225, 35),pe.colors.red,(255,50,50),action=declineapp,data=admin)
+      pe.button.rect((data.display_rect.width / 2 + 225 - 35, data.display_rect.height / 2 - 125, 35, 35),pe.colors.red,(255,50,50),action=declineapp,data="")
+      pe.button.rect((data.display_rect.width / 2, data.display_rect.height / 2 + 90, 225, 35),pe.colors.green,(50,255,50),action=acceptapp,data=key/lookup.get("math").pi)
     else:
       data.operations.append("screen "+str(lastS))
   else:

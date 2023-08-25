@@ -166,7 +166,7 @@ def clickOut():
   for app in apps:
     rect = (app[1].window_pos[0],app[1].window_pos[1]-20,app[1].window_size[0]+2,app[1].window_size[1]+22)
     mouse = lookup.get("mouse")
-    if mouse.y() < data.mS[1]-35 and data.focus != "home":
+    if mouse.y() < data.display_rect.height-35 and data.focus != "home":
       if mouse.x() > rect[0] and mouse.x() < rect[0]+rect[2] and mouse.y() > rect[1] and mouse.y() < rect[1]+rect[3]:
 
         if data.focus != app[0] and not lastM:

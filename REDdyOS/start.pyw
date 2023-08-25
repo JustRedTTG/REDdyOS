@@ -1,3 +1,5 @@
+import traceback
+
 import data
 import pygameextra as pe
 import os
@@ -415,6 +417,18 @@ def oper(x):
         data.focus = x[1]
 
 
+def boot_animation(color):
+    points = [data.centerTSX[rotation] for rotation in (0, 90, 180, 270)]
+    eye_points = [pe.math.lerp_legacy(
+        data.display_rect.center,
+        data.centerTSX[rotation + 45],
+        data.display_rect.width / 65)
+        for rotation in [0, 180]]
+    pe.draw.polygon(color, points)
+    for eye_point in eye_points:
+        pe.draw.circle(pe.colors.black, eye_point, data.display_rect.width / 120, 0)
+
+
 while True:
     pe.display.make(pe.display.get_max(), "REDdyOS", 1)
     lookup.set(data.m)
@@ -447,26 +461,15 @@ while True:
     runallm()
     if data.screen == 0:
         pe.fill.full((20, 20, 20))
-        points = [data.centerTSX[rotation] for rotation in (0, 90, 180, 270)]
-        eye_points = [pe.math.lerp(data.display_rect.center, data.centerTSX[rotation + 45], data.display_rect.width / 65) for rotation in [0, 180]]
+
         try:
             if startup[startupI] == "boot":
                 data.centerTSX.offset = int(data.centerTSX.offset)
                 if int(data.centerTSX.offset / 45) - data.centerTSX.offset / 45 != 0:
-                    pe.draw.polygon(data.red, points)
-                    for eye_point in eye_points:
-                        pe.draw.circle(pe.colors.black, eye_point, data.mS[0] / 120, 0)
+                    boot_animation(data.red)
                     data.centerTSX.offset += 1
                 else:
-                    pe.draw.rect(data.red, (
-                    data.display_rect.center[0] - data.mS[0] / 15 / 2, data.display_rect.center[1] - data.mS[0] / 15 / 2, data.mS[0] / 15,
-                    data.mS[0] / 15), 0)
-                    # pe.draw.circle(pe.colors.black,
-                    #                (data.display_rect.center[0] - data.mS[0] / 15 / 4, data.display_rect.center[1] - data.mS[0] / 15 / 20),
-                    #                data.mS[0] / 120, 0)
-                    # pe.draw.circle(pe.colors.black,
-                    #                (data.display_rect.center[0] + data.mS[0] / 15 / 4, data.display_rect.center[1] - data.mS[0] / 15 / 20),
-                    #                data.mS[0] / 120, 0)
+                    boot_animation(data.red)
                     pe.display.update()
                     time.sleep(1)
                     startupI += 1
@@ -474,30 +477,24 @@ while True:
                 data.screen = int(startup[startupI].split(" ")[1])
                 startupI += 1
             elif startup[startupI].split(" ")[0] == "run":
-                pe.draw.polygon(data.red, points)
-                for eye_point in eye_points:
-                    pe.draw.circle(pe.colors.black, eye_point, data.mS[0] / 120, 0)
+                boot_animation(data.red)
                 data.centerTSX.offset += 1.5
                 run(data.files + startup[startupI].split(" ")[1], "*STARTUP*")
                 startupI += 1
             elif startup[startupI].split(" ")[0] == "runadmin":
-                pe.draw.polygon(pe.colors.aqua, points)
-                for eye_point in eye_points:
-                    pe.draw.circle(pe.colors.black, eye_point, data.mS[0] / 120, 0)
+                boot_animation(pe.colors.aqua)
                 data.centerTSX.offset += 1.5
                 runadmin(data.files + startup[startupI].split(" ")[1], "[admin] *STARTUP*")
                 startupI += 1
             else:
-                pe.draw.polygon(data.red, p, p1, p2, p3)
-                pe.draw.circle(pe.colors.black, l1, data.mS[0] / 120, 0)
-                pe.draw.circle(pe.colors.black, l2, data.mS[0] / 120, 0)
+                boot_animation(data.red)
                 data.centerTSX.offset += 1.5
                 startupI += 1
         except Exception as e:
             if len(data.operations) > 0:
                 oper(data.operations[0])
                 del data.operations[0]
-            print(e)
+            traceback.print_exc()
     elif data.screen == 1:
         runall(1)
     elif data.screen == 2:

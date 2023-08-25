@@ -9,7 +9,7 @@ def init(dataV,lookupV):
     icon = data.files + "reddy/icons/tch.png"
     window_size = (500,100)
     window_type = 0
-    window_pos = (data.mS[0]/2-250,data.mS[1]/2-50)
+    window_pos = (data.display_rect.width/2-250,data.display_rect.height/2-50)
     title = "Testing Chaimber!"
   commons = commonsV
   pe = lookup.get("PGE")

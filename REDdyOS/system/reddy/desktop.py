@@ -14,8 +14,8 @@ def makegrid():
   global grid
   grid=[]
   x,y=5,5
-  while y+90<data.mS[1]:
-    while x+70<data.mS[0]:
+  while y+90<data.display_rect.height:
+    while x+70<data.display_rect.width:
       grid.append([(x,y,70,90),None])
       x += 75
     y += 95

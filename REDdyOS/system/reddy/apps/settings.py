@@ -24,8 +24,8 @@ ticks=0
 cubeyP=(0,0)
 cubeyT=False
 def title():
-  pe.draw.rect(data.red4,(0,0,data.mS[0]-40,25),0)
-  pe.draw.rect(data.red4,(0,20,data.mS[0],5),0)
+  pe.draw.rect(data.red4,(0,0,data.display_rect.width-40,25),0)
+  pe.draw.rect(data.red4,(0,20,data.display_rect.width,5),0)
 def option(o):
   global screen
   screen=2+o
@@ -64,19 +64,19 @@ def draw():
   global cubeyP,cubeyT,ticks,screen,lastM
   lookup.get("mouse").removeoff()
   if screen > 1:
-    data.mS = (data.mS[0]-250,data.mS[1]-25)
-    data.display_rect.center = pe.math.center((0,0,data.mS[0],data.mS[1]))
+    data.mS = (data.display_rect.width-250,data.display_rect.height-25)
+    data.display_rect.center = pe.math.center((0,0,data.display_rect.width,data.display_rect.height))
     #data.display_rect.center = (data.display_rect.center[0],data.display_rect.center[1]-25)
     lookup.get("DrawATheme").draw(off=(250,25))
-    rect = (250, 25, data.mS[0], data.mS[1])
+    rect = (250, 25, data.display_rect.width, data.display_rect.height)
     s = pe.pygame.Surface((rect[2], rect[3]))
     s.set_alpha(100)
     s.fill((0, 0, 0))
     pe.display.blit.rect(s, (rect[0], rect[1]))
-  #pe.draw.rect(pe.colors.pink,(250,25,data.mS[0],data.mS[1]),15)
+  #pe.draw.rect(pe.colors.pink,(250,25,data.display_rect.width,data.display_rect.height),15)
   data.mS = pe.display.get.size()
-  data.display_rect.center = (data.mS[0] / 2, data.mS[1] / 2)
-  pe.button.rect((data.mS[0]-40,0,40,20),pe.colors.red,pe.colors.pink,action=close)
+  data.display_rect.center = (data.display_rect.width / 2, data.display_rect.height / 2)
+  pe.button.rect((data.display_rect.width-40,0,40,20),pe.colors.red,pe.colors.pink,action=close)
   if screen == 0:
     cubeyP = (data.display_rect.center[0]-200,data.display_rect.center[1])
     screen=1
@@ -101,8 +101,8 @@ def draw():
     else:
       screen = 2
   elif screen > 1:
-    pe.draw.rect(data.red,(0,0,250,data.mS[1]),0)
-    pe.draw.line(data.red4,(250,0),(250,data.mS[1]),5)
+    pe.draw.rect(data.red,(0,0,250,data.display_rect.height),0)
+    pe.draw.line(data.red4,(250,0),(250,data.display_rect.height),5)
     title()
     options()
     pe.Layer[0][0] = (250, 25)
@@ -135,13 +135,13 @@ def draw():
       pe.fill.full(data.red)
       ic = 25
       y = 0
-      pe.draw.rect(data.red, (0, y, data.mS[0], ic), 0)
+      pe.draw.rect(data.red, (0, y, data.display_rect.width, ic), 0)
       y += ic
-      pe.draw.rect(data.red2, (0, y, data.mS[0], ic), 0)
+      pe.draw.rect(data.red2, (0, y, data.display_rect.width, ic), 0)
       y += ic
-      pe.draw.rect(data.red3, (0, y, data.mS[0], ic), 0)
+      pe.draw.rect(data.red3, (0, y, data.display_rect.width, ic), 0)
       y += ic
-      pe.draw.rect(data.red4, (0, y, data.mS[0], ic), 0)
+      pe.draw.rect(data.red4, (0, y, data.display_rect.width, ic), 0)
       #
       pe.display.set(screenS)
       pe.display.blit.rect(smallT,(250+10,25+10))
