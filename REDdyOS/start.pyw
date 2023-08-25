@@ -72,7 +72,7 @@ def decript(key, lock):
 def gMS():
     global data
     data.display_rect = pe.display.display_reference.rect
-    data.display_rect.centerTSX = pe.TSX(data.display_rect.center, data.display_rect.width // 25)
+    data.centerTSX = pe.TSX(data.display_rect.center, data.display_rect.width // 25)
 
 
 pe.display.make((0, 0), "REDdyOS", 2)
@@ -447,16 +447,16 @@ while True:
     runallm()
     if data.screen == 0:
         pe.fill.full((20, 20, 20))
-        points = [data.display_rect.centerTSX[rotation] for rotation in (0, 90, 180, 270)]
-        eye_points = [pe.math.lerp(data.display_rect.center, data.display_rect.centerTSX[rotation + 45], data.display_rect.width / 65) for rotation in [0, 180]]
+        points = [data.centerTSX[rotation] for rotation in (0, 90, 180, 270)]
+        eye_points = [pe.math.lerp(data.display_rect.center, data.centerTSX[rotation + 45], data.display_rect.width / 65) for rotation in [0, 180]]
         try:
             if startup[startupI] == "boot":
-                data.display_rect.centerTSX.offset = int(data.display_rect.centerTSX.offset)
-                if int(data.display_rect.centerTSX.offset / 45) - data.display_rect.centerTSX.offset / 45 != 0:
+                data.centerTSX.offset = int(data.centerTSX.offset)
+                if int(data.centerTSX.offset / 45) - data.centerTSX.offset / 45 != 0:
                     pe.draw.polygon(data.red, points)
                     for eye_point in eye_points:
                         pe.draw.circle(pe.colors.black, eye_point, data.mS[0] / 120, 0)
-                    data.display_rect.centerTSX.offset += 1
+                    data.centerTSX.offset += 1
                 else:
                     pe.draw.rect(data.red, (
                     data.display_rect.center[0] - data.mS[0] / 15 / 2, data.display_rect.center[1] - data.mS[0] / 15 / 2, data.mS[0] / 15,
@@ -477,21 +477,21 @@ while True:
                 pe.draw.polygon(data.red, points)
                 for eye_point in eye_points:
                     pe.draw.circle(pe.colors.black, eye_point, data.mS[0] / 120, 0)
-                data.display_rect.centerTSX.offset += 1.5
+                data.centerTSX.offset += 1.5
                 run(data.files + startup[startupI].split(" ")[1], "*STARTUP*")
                 startupI += 1
             elif startup[startupI].split(" ")[0] == "runadmin":
                 pe.draw.polygon(pe.colors.aqua, points)
                 for eye_point in eye_points:
                     pe.draw.circle(pe.colors.black, eye_point, data.mS[0] / 120, 0)
-                data.display_rect.centerTSX.offset += 1.5
+                data.centerTSX.offset += 1.5
                 runadmin(data.files + startup[startupI].split(" ")[1], "[admin] *STARTUP*")
                 startupI += 1
             else:
                 pe.draw.polygon(data.red, p, p1, p2, p3)
                 pe.draw.circle(pe.colors.black, l1, data.mS[0] / 120, 0)
                 pe.draw.circle(pe.colors.black, l2, data.mS[0] / 120, 0)
-                data.display_rect.centerTSX.offset += 1.5
+                data.centerTSX.offset += 1.5
                 startupI += 1
         except Exception as e:
             if len(data.operations) > 0:
