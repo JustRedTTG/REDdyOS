@@ -10,5 +10,5 @@ run reddy/easytext.py
 run reddy/adminmng.py
 
 run reddy/themes.py
-runadmin reddy/lockscreen.py
+runadmin reddy/apps/welcome.py
 screen 1

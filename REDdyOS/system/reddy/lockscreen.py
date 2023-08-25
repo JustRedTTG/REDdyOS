@@ -21,8 +21,8 @@ def init(dataV,lookupV):
   data = dataV
   lookup = lookupV
   pe = lookup.get("PGE")
-  timeT = pe.text.make('--:--', 'freesansbold.ttf', int(data.display_rect.width/20), pe.math.center((0, data.display_rect.center[1], data.display_rect.center[0]/2, data.display_rect.height/2)),(pe.colors.black, None))
-  nameT = pe.text.make('', 'freesansbold.ttf', int(data.display_rect.width/20),data.display_rect.center,(pe.colors.black, None))
+  timeT = pe.text.Text('--:--', 'freesansbold.ttf', int(data.display_rect.width/20), pe.math.center((0, data.display_rect.center[1], data.display_rect.center[0]/2, data.display_rect.height/2)),(pe.colors.black, None))
+  nameT = pe.text.Text('', 'freesansbold.ttf', int(data.display_rect.width/20),data.display_rect.center,(pe.colors.black, None))
   tm = lookup.get("tokenmng")
   tm.load()
   settings = getS(tm.current_user)
