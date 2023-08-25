@@ -17,7 +17,7 @@ def init(dataV,lookupV):
   pe = lookup.get("PGE")
 
   ezd = lookup.get("EZdrag")
-  pager = ezd.horizontal.pager((95,commons.window_size[1]/2,10,25),pe.color.gray,pe.color.black)
+  pager = ezd.horizontal.pager((95,commons.window_size[1]/2,10,25),pe.colors.gray,pe.colors.black)
 
   framehost = lookup.get("FHost")
   fhID = framehost.setup("filemng",commons)
@@ -41,7 +41,7 @@ def draw():
   framehost.screen(fhID)
 
   sS = pe.display.get.size()
-  pe.fill.full(pe.color.verydarkgray)
+  pe.fill.full(pe.colors.verydarkgray)
   pager.y = commons.window_size[1]/2
   ezd = lookup.get("EZdrag")
 

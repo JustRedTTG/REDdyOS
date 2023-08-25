@@ -21,8 +21,8 @@ def draw():
   global calls
   framehost.draw(FID)
   framehost.screen(FID)
-  pe.fill.full(pe.color.white)
-  pe.text.display(pe.text.make("The System modules were restarted!", 'freesansbold.ttf', 25, pe.math.center((0,0,500,100)), (pe.color.black, None)))
+  pe.fill.full(pe.colors.white)
+  pe.text.display(pe.text.make("The System modules were restarted!", 'freesansbold.ttf', 25, pe.math.center((0,0,500,100)), (pe.colors.black, None)))
   framehost.exit(FID)
   calls+=1
   if calls >= 100:

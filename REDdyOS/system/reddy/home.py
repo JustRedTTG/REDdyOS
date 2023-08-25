@@ -54,7 +54,7 @@ def draw():
     else:
       data.focus = ""
     lookup.getapp("tskBAR").locked = True
-    pe.draw.rect(pe.color.black,(0,data.mS[1]-size-35,data.mS[0]/3,size+35),1)
+    pe.draw.rect(pe.colors.black,(0,data.mS[1]-size-35,data.mS[0]/3,size+35),1)
     pe.draw.rect((0,0,0,100),(0,y,data.mS[0]/3,size+35),0)
     drawApps(y)
   else:

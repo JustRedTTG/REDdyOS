@@ -140,7 +140,7 @@ def drawIcon(rect,file,window_pos=(0,0),icon=None):
     if icon != None and lookup.get("os").path.exists(icon):
       lookup.get("EZimage").image(icon, (iconSize, iconSize), iconPos)
     else:
-      pe.draw.rect(pe.color.white, (iconPos[0], iconPos[1], iconSize, iconSize), 0)
+      pe.draw.rect(pe.colors.white, (iconPos[0], iconPos[1], iconSize, iconSize), 0)
   pe.text.display(ezt.cram(fln,data.red4,textRect))
   return [rect,file,window_pos,icon]
 

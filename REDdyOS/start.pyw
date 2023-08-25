@@ -71,13 +71,12 @@ def decript(key, lock):
 
 def gMS():
     global data
-    data.mS = pe.display.get.size()
-    data.center = (data.mS[0] / 2, data.mS[1] / 2)
-    data.centerTSX = pe.math.tsx.make(data.center, data.mS[0] / 25)
+    data.display_rect = pe.display.display_reference.rect
+    data.centerTSX = pe.TSX(data.display_rect.center, data.display_rect.width // 25)
 
 
 rotation = 0
-pe.display.make(pe.display.get.Msize(), "REDdyOS", 2)
+pe.display.make((0, 0), "REDdyOS", 2)
 gMS()
 data.files = str(os.path.realpath(__file__)).replace("start.pyw", 'system/')
 print(data.files)
@@ -418,7 +417,7 @@ def oper(x):
 
 
 while True:
-    pe.display.make(pe.display.get.Msize(), "REDdyOS", 1)
+    pe.display.make(pe.display.get_max(), "REDdyOS", 1)
     lookup.set(data.m)
     lookup.set(data.m)
     lookup.setapp(data.apps)
@@ -440,7 +439,7 @@ while True:
     if len(data.apps) < 1 and data.killNoApps:
         exit()
     for pe.event.c in data.events:
-        if pe.event.quitcheck():
+        if pe.event.quitCheck():
             if data.focus != "":
                 data.operations.append("close " + data.focus)
             else:
@@ -449,28 +448,24 @@ while True:
     runallm()
     if data.screen == 0:
         pe.fill.full((20, 20, 20))
-        p = pe.math.tsx.get(data.centerTSX, rotation)
-        p1 = pe.math.tsx.get(data.centerTSX, rotation + 90)
-        l1 = pe.math.lerp(data.center, pe.math.tsx.get(data.centerTSX, rotation + 45), data.mS[0] / 65)
-        p2 = pe.math.tsx.get(data.centerTSX, rotation + 180)
-        l2 = pe.math.lerp(data.center, pe.math.tsx.get(data.centerTSX, rotation + 180 + 45), data.mS[0] / 65)
-        p3 = pe.math.tsx.get(data.centerTSX, rotation + 270)
+        points = [0, 90, 180, 270]
+        lines = [pe.math.lerp(data.center, pe.math.tsx.get(data.centerTSX, rotation + 45), data.mS[0] / 65) for ratation in [0, 180]]
         try:
             if startup[startupI] == "boot":
                 rotation = int(rotation)
                 if int(rotation / 45) - rotation / 45 != 0:
-                    pe.draw.polygon(data.red, p, p1, p2, p3)
-                    pe.draw.circle(pe.color.black, l1, data.mS[0] / 120, 0)
-                    pe.draw.circle(pe.color.black, l2, data.mS[0] / 120, 0)
+                    pe.draw.polygon(data.red, points)
+                    for line in lines:
+                        pe.draw.circle(pe.colors.black, line, data.mS[0] / 120, 0)
                     rotation += 1
                 else:
                     pe.draw.rect(data.red, (
                     data.center[0] - data.mS[0] / 15 / 2, data.center[1] - data.mS[0] / 15 / 2, data.mS[0] / 15,
                     data.mS[0] / 15), 0)
-                    pe.draw.circle(pe.color.black,
+                    pe.draw.circle(pe.colors.black,
                                    (data.center[0] - data.mS[0] / 15 / 4, data.center[1] - data.mS[0] / 15 / 20),
                                    data.mS[0] / 120, 0)
-                    pe.draw.circle(pe.color.black,
+                    pe.draw.circle(pe.colors.black,
                                    (data.center[0] + data.mS[0] / 15 / 4, data.center[1] - data.mS[0] / 15 / 20),
                                    data.mS[0] / 120, 0)
                     pe.display.update()
@@ -481,22 +476,22 @@ while True:
                 startupI += 1
             elif startup[startupI].split(" ")[0] == "run":
                 pe.draw.polygon(data.red, p, p1, p2, p3)
-                pe.draw.circle(pe.color.black, l1, data.mS[0] / 120, 0)
-                pe.draw.circle(pe.color.black, l2, data.mS[0] / 120, 0)
+                pe.draw.circle(pe.colors.black, l1, data.mS[0] / 120, 0)
+                pe.draw.circle(pe.colors.black, l2, data.mS[0] / 120, 0)
                 rotation += 1.5
                 run(data.files + startup[startupI].split(" ")[1], "*STARTUP*")
                 startupI += 1
             elif startup[startupI].split(" ")[0] == "runadmin":
-                pe.draw.polygon(pe.color.blue, p, p1, p2, p3)
-                pe.draw.circle(pe.color.black, l1, data.mS[0] / 120, 0)
-                pe.draw.circle(pe.color.black, l2, data.mS[0] / 120, 0)
+                pe.draw.polygon(pe.colors.blue, p, p1, p2, p3)
+                pe.draw.circle(pe.colors.black, l1, data.mS[0] / 120, 0)
+                pe.draw.circle(pe.colors.black, l2, data.mS[0] / 120, 0)
                 rotation += 1.5
                 runadmin(data.files + startup[startupI].split(" ")[1], "[admin] *STARTUP*")
                 startupI += 1
             else:
                 pe.draw.polygon(data.red, p, p1, p2, p3)
-                pe.draw.circle(pe.color.black, l1, data.mS[0] / 120, 0)
-                pe.draw.circle(pe.color.black, l2, data.mS[0] / 120, 0)
+                pe.draw.circle(pe.colors.black, l1, data.mS[0] / 120, 0)
+                pe.draw.circle(pe.colors.black, l2, data.mS[0] / 120, 0)
                 rotation += 1.5
                 startupI += 1
         except Exception as e:

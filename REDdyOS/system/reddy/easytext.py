@@ -87,7 +87,7 @@ class textbox:
     surface.blit(tS,(2+cursorX-tS.get_width(),5))
     pe.draw.rect(outline, Srect, outlinewidth)
     if ctext["cursorTick"] <= 10:
-      pe.draw.line(pe.color.black,(cursorX+2,outlinewidth+2),(cursorX+2,rect[3]-outlinewidth-2),2)
+      pe.draw.line(pe.colors.black,(cursorX+2,outlinewidth+2),(cursorX+2,rect[3]-outlinewidth-2),2)
     if ctext["cursorTick"] >= 20:
       ctext["cursorTick"] = 0
     else:

@@ -75,11 +75,11 @@ def call():
         title = lookup.getapp(admin).commons.title
       except:
         title = admin
-      pe.text.display(ezt.cram(title,pe.color.black,(data.mS[0]/2-75,data.mS[1]/2-100,300,25)))
-      pe.text.display(ezt.fit("Wants admin privileges",pe.color.black,(data.mS[0]/2-75,data.mS[1]/2-75,300,25)))
-      pe.button.rect((data.mS[0] / 2 - 225, data.mS[1] / 2 + 90, 225, 35),pe.color.red,(255,50,50),action=declineapp,data=admin)
-      pe.button.rect((data.mS[0] / 2 + 225 - 35, data.mS[1] / 2 - 125, 35, 35),pe.color.red,(255,50,50),action=declineapp,data="")
-      pe.button.rect((data.mS[0] / 2, data.mS[1] / 2 + 90, 225, 35),pe.color.green,(50,255,50),action=acceptapp,data=key/lookup.get("math").pi)
+      pe.text.display(ezt.cram(title,pe.colors.black,(data.mS[0]/2-75,data.mS[1]/2-100,300,25)))
+      pe.text.display(ezt.fit("Wants admin privileges",pe.colors.black,(data.mS[0]/2-75,data.mS[1]/2-75,300,25)))
+      pe.button.rect((data.mS[0] / 2 - 225, data.mS[1] / 2 + 90, 225, 35),pe.colors.red,(255,50,50),action=declineapp,data=admin)
+      pe.button.rect((data.mS[0] / 2 + 225 - 35, data.mS[1] / 2 - 125, 35, 35),pe.colors.red,(255,50,50),action=declineapp,data="")
+      pe.button.rect((data.mS[0] / 2, data.mS[1] / 2 + 90, 225, 35),pe.colors.green,(50,255,50),action=acceptapp,data=key/lookup.get("math").pi)
     else:
       data.operations.append("screen "+str(lastS))
   else:

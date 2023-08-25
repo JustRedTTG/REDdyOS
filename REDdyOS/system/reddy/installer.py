@@ -183,18 +183,18 @@ def draw():
             else:
                 steps+=1
         elif steps>1 and steps<6:
-            pe.fill.full(pe.color.white)
+            pe.fill.full(pe.colors.white)
             if os.path.exists(data.files+"data/temp/icon.png",):
                 lookup.get("EZimage").image(data.files+"data/temp/icon.png",(100,100),(5,5))
             else:
                 lookup.get("EZimage").image(data.files + "reddy/icons/installation.png", (100, 100), (5, 5))
             if steps==2:
-                pe.button.rect((500-155,200-40,150,35),(225,225,225),(200,200,200),Text=lookup.get("EZtext").size("Install",pe.color.black,(500-155,200-40,150,35)),action=install)
+                pe.button.rect((500-155,200-40,150,35),(225,225,225),(200,200,200),Text=lookup.get("EZtext").size("Install",pe.colors.black,(500-155,200-40,150,35)),action=install)
             elif steps==1.5:
-                pe.button.rect((500 - 155, 200 - 40, 150, 35), (225, 225, 225), (200, 200, 200),Text=lookup.get("EZtext").size("Re-install", pe.color.black,(500 - 155, 200 - 40, 150, 35)), action=install)
+                pe.button.rect((500 - 155, 200 - 40, 150, 35), (225, 225, 225), (200, 200, 200),Text=lookup.get("EZtext").size("Re-install", pe.colors.black,(500 - 155, 200 - 40, 150, 35)), action=install)
             if steps!=2.5 and steps!=2.7:
-                name = lookup.get("EZtext").size(installinfo['name'],pe.color.black,(110,5,500-115,25))
-                package = lookup.get("EZtext").size(installinfo['package'],pe.color.black,(110,35,500-115,10),10)
+                name = lookup.get("EZtext").size(installinfo['name'],pe.colors.black,(110,5,500-115,25))
+                package = lookup.get("EZtext").size(installinfo['package'],pe.colors.black,(110,35,500-115,10),10)
                 name.original_pos=(110,5)
                 package.original_pos=(110,35)
                 name.pos=(110,5)
@@ -202,18 +202,18 @@ def draw():
                 pe.text.display(lookup.get("EZtext").align.topleft(name))
                 pe.text.display(lookup.get("EZtext").align.topleft(package))
             elif steps==2.5:
-                detail = lookup.get("EZtext").size("additional packages, will be installed", pe.color.black, (110, 35, 500 - 115, 10), 10)
+                detail = lookup.get("EZtext").size("additional packages, will be installed", pe.colors.black, (110, 35, 500 - 115, 10), 10)
                 detail.original_pos = (110, 35)
                 detail.pos = (110, 35)
                 pe.text.display(lookup.get("EZtext").align.center(detail))
-                pe.button.rect((500 - 155, 200 - 40, 150, 35), (225, 225, 225), (200, 200, 200),Text=lookup.get("EZtext").size("OK", pe.color.black,(500 - 155, 200 - 40, 150, 35)), action=install)
-                pe.button.rect((5, 200 - 40, 150, 35), (225, 225, 225), (200, 200, 200),Text=lookup.get("EZtext").size("Exit", pe.color.black,(500 - 155, 200 - 40, 150, 35)), action=ONEexit)
+                pe.button.rect((500 - 155, 200 - 40, 150, 35), (225, 225, 225), (200, 200, 200),Text=lookup.get("EZtext").size("OK", pe.colors.black,(500 - 155, 200 - 40, 150, 35)), action=install)
+                pe.button.rect((5, 200 - 40, 150, 35), (225, 225, 225), (200, 200, 200),Text=lookup.get("EZtext").size("Exit", pe.colors.black,(500 - 155, 200 - 40, 150, 35)), action=ONEexit)
             elif steps==2.7:
-                detail = lookup.get("EZtext").size("No Internet!", pe.color.red,(110, 35, 500 - 115, 10), 10)
+                detail = lookup.get("EZtext").size("No Internet!", pe.colors.red,(110, 35, 500 - 115, 10), 10)
                 detail.original_pos = (110, 35)
                 detail.pos = (110, 35)
                 pe.text.display(lookup.get("EZtext").align.center(detail))
-                pe.button.rect((500 - 155, 200 - 40, 150, 35), (225, 225, 225), (200, 200, 200),Text=lookup.get("EZtext").size("Exit", pe.color.black, (500 - 155, 200 - 40, 150, 35)),action=ONEexit)
+                pe.button.rect((500 - 155, 200 - 40, 150, 35), (225, 225, 225), (200, 200, 200),Text=lookup.get("EZtext").size("Exit", pe.colors.black, (500 - 155, 200 - 40, 150, 35)),action=ONEexit)
             if steps==3:
                 pe.slider.normal((0, 100, 500, 35, 20), (0, 255, 0), 0, len(installinfo['install']), ton, None, (0,255,0), 35,True, (255,255,255), 35)
             elif steps==5:
@@ -225,17 +225,17 @@ def draw():
                 pass
             steps+=1
         elif steps==7:
-            pe.fill.full(pe.color.white)
+            pe.fill.full(pe.colors.white)
             if run!=None:
                 if os.path.exists(data.files + "data/temp/icon.png", ):
                     lookup.get("EZimage").image(data.files + "data/temp/icon.png", (100, 100), (200, 5))
                 else:
                     lookup.get("EZimage").image(data.files + "reddy/icons/installation.png", (100, 100), (200, 5))
-                name = lookup.get("EZtext").size(installinfo['name'], pe.color.black, (0, 110, 500, 25))
-                package = lookup.get("EZtext").size(installinfo['package'], pe.color.black, (0, 140, 500, 10),10)
+                name = lookup.get("EZtext").size(installinfo['name'], pe.colors.black, (0, 110, 500, 25))
+                package = lookup.get("EZtext").size(installinfo['package'], pe.colors.black, (0, 140, 500, 10),10)
                 pe.text.display(name)
                 pe.text.display(package)
-                pe.button.rect((500 - 155, 200 - 40, 150, 35), (225, 225, 225), (200, 200, 200),Text=lookup.get("EZtext").size("Run", pe.color.black,(500 - 155, 200 - 40, 150, 35)), action=runR)
+                pe.button.rect((500 - 155, 200 - 40, 150, 35), (225, 225, 225), (200, 200, 200),Text=lookup.get("EZtext").size("Run", pe.colors.black,(500 - 155, 200 - 40, 150, 35)), action=runR)
             else:
                 steps+=1
         elif steps==8:

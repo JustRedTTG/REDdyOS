@@ -73,15 +73,15 @@ def draw():
     s.set_alpha(100)
     s.fill((0, 0, 0))
     pe.display.blit.rect(s, (rect[0], rect[1]))
-  #pe.draw.rect(pe.color.pink,(250,25,data.mS[0],data.mS[1]),15)
+  #pe.draw.rect(pe.colors.pink,(250,25,data.mS[0],data.mS[1]),15)
   data.mS = pe.display.get.size()
   data.center = (data.mS[0] / 2, data.mS[1] / 2)
-  pe.button.rect((data.mS[0]-40,0,40,20),pe.color.red,pe.color.pink,action=close)
+  pe.button.rect((data.mS[0]-40,0,40,20),pe.colors.red,pe.colors.pink,action=close)
   if screen == 0:
     cubeyP = (data.center[0]-200,data.center[1])
     screen=1
   elif screen == 1:
-    pe.fill.full(pe.color.white)
+    pe.fill.full(pe.colors.white)
     if ticks<35:
       if cubeyT:
         cubeyP = (cubeyP[0]-20,cubeyP[1])
@@ -91,12 +91,12 @@ def draw():
         cubeyT = False
       elif cubeyP[0] > data.center[0]+200:
         cubeyT = True
-      pe.draw.rect(pe.color.red,(cubeyP[0]-50,cubeyP[1]-50,100,100),0)
-      pe.draw.line(pe.color.black, (cubeyP[0]-40,cubeyP[1]-40),(cubeyP[0]-30,cubeyP[1]-20),10)
-      pe.draw.line(pe.color.black, (cubeyP[0]-40,cubeyP[1]),(cubeyP[0]-30,cubeyP[1]-20),10)
+      pe.draw.rect(pe.colors.red,(cubeyP[0]-50,cubeyP[1]-50,100,100),0)
+      pe.draw.line(pe.colors.black, (cubeyP[0]-40,cubeyP[1]-40),(cubeyP[0]-30,cubeyP[1]-20),10)
+      pe.draw.line(pe.colors.black, (cubeyP[0]-40,cubeyP[1]),(cubeyP[0]-30,cubeyP[1]-20),10)
 
-      pe.draw.line(pe.color.black, (cubeyP[0]+40,cubeyP[1]-40),(cubeyP[0]+30,cubeyP[1]-20),10)
-      pe.draw.line(pe.color.black, (cubeyP[0]+40,cubeyP[1]),(cubeyP[0]+30,cubeyP[1]-20),10)
+      pe.draw.line(pe.colors.black, (cubeyP[0]+40,cubeyP[1]-40),(cubeyP[0]+30,cubeyP[1]-20),10)
+      pe.draw.line(pe.colors.black, (cubeyP[0]+40,cubeyP[1]),(cubeyP[0]+30,cubeyP[1]-20),10)
       ticks+=1
     else:
       screen = 2
@@ -116,8 +116,8 @@ def draw():
       #
       screenS = pe.display_a
 
-      pe.button.rect((250+5,25+5,185,110),pe.color.white,(200,200,200),action=settheme,data=0)
-      pe.button.rect((250+25+175,25+5,185,110),pe.color.white,(200,200,200),action=settheme,data=1)
+      pe.button.rect((250+5,25+5,185,110),pe.colors.white,(200,200,200),action=settheme,data=0)
+      pe.button.rect((250+25+175,25+5,185,110),pe.colors.white,(200,200,200),action=settheme,data=1)
 
       # THEME 1
       smallT = pe.pygame.Surface((175,100))
@@ -147,33 +147,33 @@ def draw():
       pe.display.blit.rect(smallT,(250+10,25+10))
       pe.display.blit.rect(smallT2,(250+175+30,25+10))
       x=255
-      pe.button.rect((x,205,50,50),pe.color.white,(200,200,200),action=setcolors,data=0)
-      pe.draw.rect(pe.color.red,(x+5,210,40,40),0)
+      pe.button.rect((x,205,50,50),pe.colors.white,(200,200,200),action=setcolors,data=0)
+      pe.draw.rect(pe.colors.red,(x+5,210,40,40),0)
       x += 55
-      pe.button.rect((x, 205, 50, 50), pe.color.white, (200, 200, 200),action=setcolors,data=1)
-      pe.draw.rect(pe.color.green, (x + 5, 210, 40, 40), 0)
+      pe.button.rect((x, 205, 50, 50), pe.colors.white, (200, 200, 200),action=setcolors,data=1)
+      pe.draw.rect(pe.colors.green, (x + 5, 210, 40, 40), 0)
       x += 55
-      pe.button.rect((x, 205, 50, 50), pe.color.white, (200, 200, 200),action=setcolors,data=2)
-      pe.draw.rect(pe.color.blue, (x + 5, 210, 40, 40), 0)
+      pe.button.rect((x, 205, 50, 50), pe.colors.white, (200, 200, 200),action=setcolors,data=2)
+      pe.draw.rect(pe.colors.blue, (x + 5, 210, 40, 40), 0)
       x += 55
-      pe.button.rect((x, 205, 50, 50), pe.color.white, (200, 200, 200),action=setcolors,data=3)
+      pe.button.rect((x, 205, 50, 50), pe.colors.white, (200, 200, 200),action=setcolors,data=3)
       pe.draw.rect((255,255,0), (x+5, 210, 40, 40), 0)
       x += 55
-      pe.button.rect((x, 205, 50, 50), pe.color.white, (200, 200, 200),action=setcolors,data=4)
+      pe.button.rect((x, 205, 50, 50), pe.colors.white, (200, 200, 200),action=setcolors,data=4)
       pe.draw.rect((255, 0, 255), (x + 5, 210, 40, 40), 0)
       x += 55
-      pe.button.rect((x, 205, 50, 50), pe.color.white, (200, 200, 200),action=setcolors,data=5)
+      pe.button.rect((x, 205, 50, 50), pe.colors.white, (200, 200, 200),action=setcolors,data=5)
       pe.draw.rect((0, 255, 255), (x + 5, 210, 40, 40), 0)
       x += 55
-      pe.button.rect((x, 205, 50, 50), pe.color.black, (200, 200, 200),action=setcolors,data=6)
-      pe.draw.rect(pe.color.white, (x + 5, 210, 40, 40), 0)
+      pe.button.rect((x, 205, 50, 50), pe.colors.black, (200, 200, 200),action=setcolors,data=6)
+      pe.draw.rect(pe.colors.white, (x + 5, 210, 40, 40), 0)
     elif screen >= 4 < 5:
       ezt=lookup.get("EZtext")
       circlepfp = lookup.get("circlepfp")
       sm = lookup.get("stgmng")
       um = lookup.get("usrmng")
       settings = sm.get(um.load.user(data.current_user).settings)
-      pe.draw.ellipse(pe.color.white,(260, 35,200,200))
+      pe.draw.ellipse(pe.colors.white,(260, 35,200,200))
       tsx = pe.math.tsx.make((360,135),100)
       if settings.pfp != "NONE":
         lookup.get("EZimage").image(circlepfp.username(data.current_user), (200, 200), (260, 35))
@@ -192,7 +192,7 @@ def draw():
       if screen == 4.1:
         pe.draw.circle(data.red2, pos, 22, 0)
         pe.draw.rect(data.red2,(pos[0],pos[1]-100,400,200),0)
-        pe.button.rect((pos[0]+360,pos[1]-100,40,25),pe.color.red,pe.color.pink,action=option,data=2)
+        pe.button.rect((pos[0]+360,pos[1]-100,40,25),pe.colors.red,pe.colors.pink,action=option,data=2)
         defaults = lookup.get("os").listdir(data.files+"reddy/default")
         x,y=pos[0]+10,pos[1]-90
         for image in defaults:

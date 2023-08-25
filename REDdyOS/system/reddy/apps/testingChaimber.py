@@ -63,25 +63,25 @@ def draw():
     framehost.draw(FID)
     framehost.screen(FID)
     mouse = lookup.get("mouse")
-    pe.fill.full(pe.color.white)
-    pe.draw.circle(pe.color.red,mouse.pos(),5,0)
-    pe.draw.circle(pe.color.green,mouse.Wpos(),5,0)
-    pe.button.rect((0,0,50,50),pe.color.red,pe.color.blue,action=reboot)
-    pe.button.rect((100,0,50,50),pe.color.red,pe.color.blue,action=kill)
+    pe.fill.full(pe.colors.white)
+    pe.draw.circle(pe.colors.red,mouse.pos(),5,0)
+    pe.draw.circle(pe.colors.green,mouse.Wpos(),5,0)
+    pe.button.rect((0,0,50,50),pe.colors.red,pe.colors.blue,action=reboot)
+    pe.button.rect((100,0,50,50),pe.colors.red,pe.colors.blue,action=kill)
     if not lookup.get("adminmng").check("tch"):
       if not "tch" in lookup.get("adminmng").decline:
-        pe.button.rect((50,0,50,50),pe.color.red,pe.color.blue,action=getadmin)
+        pe.button.rect((50,0,50,50),pe.colors.red,pe.colors.blue,action=getadmin)
       else:
-        pe.draw.rect(pe.color.black,(60,10,30,30),0)
+        pe.draw.rect(pe.colors.black,(60,10,30,30),0)
     elif admin == None:
-      pe.draw.rect(pe.color.yellow, (60, 10, 30, 30), 0)
+      pe.draw.rect(pe.colors.yellow, (60, 10, 30, 30), 0)
     else:
-      pe.draw.rect(pe.color.green, (60, 10, 30, 30), 0)
+      pe.draw.rect(pe.colors.green, (60, 10, 30, 30), 0)
     if not show:
-      ctext = lookup.get("EZtext").textbox.single(ctext,pe.color.red,(0,100,200,25))
+      ctext = lookup.get("EZtext").textbox.single(ctext,pe.colors.red,(0,100,200,25))
       if lookup.get("key").enter():
         show=True
     else:
-      pe.text.display(lookup.get("EZtext").size(ctext['text'],pe.color.black,(0,100,200,25)))
+      pe.text.display(lookup.get("EZtext").size(ctext['text'],pe.colors.black,(0,100,200,25)))
     framehost.exit(FID)
     admin=None

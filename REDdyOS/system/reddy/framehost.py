@@ -16,10 +16,10 @@ def setup(name,commons):
                commons,
                None,
                None,
-               ezd.central.sizer((p[0]+s[0]-1,p[1]+s[1]+20-1),[(p[0]+150,p[1]+150),None],pe.color.gray),
+               ezd.central.sizer((p[0]+s[0]-1,p[1]+s[1]+20-1),[(p[0]+150,p[1]+150),None],pe.colors.gray),
                (p[0] + s[0] - 1, p[1] + s[1] + 20 - 1),
-               ezd.horizontal.pager((p[0] + s[0] - 11, p[1] + s[1]/2 + 20,10,s[1]),pe.color.gray,pe.color.black),
-               ezd.vertical.pager((p[0] + s[0]/2,p[1]+s[1]+20-1,s[0],10),pe.color.gray,pe.color.black)
+               ezd.horizontal.pager((p[0] + s[0] - 11, p[1] + s[1]/2 + 20,10,s[1]),pe.colors.gray,pe.colors.black),
+               ezd.vertical.pager((p[0] + s[0]/2,p[1]+s[1]+20-1,s[0],10),pe.colors.gray,pe.colors.black)
                ])
   return len(apps)-1
 
@@ -73,9 +73,9 @@ def draw_frame(app,ID):
 
     # X button
     if drag or lastM:
-      pe.draw.rect(pe.color.red, (app[1].window_pos[0] + app[1].window_size[0] - 35, app[1].window_pos[1], 35, 20), 0)
+      pe.draw.rect(pe.colors.red, (app[1].window_pos[0] + app[1].window_size[0] - 35, app[1].window_pos[1], 35, 20), 0)
     else:
-      pe.button.rect((app[1].window_pos[0] + app[1].window_size[0] - 35, app[1].window_pos[1], 35, 20), pe.color.red,pe.color.pink, action=close, data=ID)
+      pe.button.rect((app[1].window_pos[0] + app[1].window_size[0] - 35, app[1].window_pos[1], 35, 20), pe.colors.red,pe.colors.pink, action=close, data=ID)
     mouse.addoff()
     try:
       apps[ID]
@@ -85,8 +85,8 @@ def draw_frame(app,ID):
       return
     apps[ID][3] = pe.pygame.Surface(app[1].window_size)
     buldge=3
-    pe.draw.rect(pe.color.black,(app[1].window_pos[0],app[1].window_pos[1],app[1].window_size[0],app[1].window_size[1]+20),buldge)
-    pe.draw.line(pe.color.black,(app[1].window_pos[0],app[1].window_pos[1]+20),(app[1].window_pos[0]+app[1].window_size[0],app[1].window_pos[1]+20),buldge)
+    pe.draw.rect(pe.colors.black,(app[1].window_pos[0],app[1].window_pos[1],app[1].window_size[0],app[1].window_size[1]+20),buldge)
+    pe.draw.line(pe.colors.black,(app[1].window_pos[0],app[1].window_pos[1]+20),(app[1].window_pos[0]+app[1].window_size[0],app[1].window_pos[1]+20),buldge)
 
 def draw(ID):
   #print("framehost draw",ID)
@@ -160,7 +160,7 @@ def draw(ID):
     apps[ID]
   except:
     return
-  pe.text.display(lookup.get("EZtext").cram(title,pe.color.black,(apps[ID][1].window_pos[0],apps[ID][1].window_pos[1],apps[ID][1].window_size[0]-35,20)))
+  pe.text.display(lookup.get("EZtext").cram(title,pe.colors.black,(apps[ID][1].window_pos[0],apps[ID][1].window_pos[1],apps[ID][1].window_size[0]-35,20)))
 def clickOut():
   global lastM
   for app in apps:

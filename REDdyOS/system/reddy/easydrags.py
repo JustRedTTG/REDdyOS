@@ -171,8 +171,8 @@ class central:
     return (s.x,s.y)
   def draw_sizer(s):
     s.rect = (s.x - s.width / 2, s.y - s.height / 2, s.width, s.height)
-    pe.draw.rect(pe.color.white,s.rect,3)
-    pe.draw.rect(pe.color.black,s.rect,2)
+    pe.draw.rect(pe.colors.white,s.rect,3)
+    pe.draw.rect(pe.colors.black,s.rect,2)
     pe.draw.rect(s.back,s.rect,0)
 
 def call():

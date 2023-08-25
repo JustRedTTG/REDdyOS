@@ -21,8 +21,8 @@ def init(dataV,lookupV):
   data = dataV
   lookup = lookupV
   pe = lookup.get("PGE")
-  timeT = pe.text.make('--:--', 'freesansbold.ttf', int(data.mS[0]/20), pe.math.center((0, data.center[1], data.center[0]/2, data.mS[1]/2)),(pe.color.black, None))
-  nameT = pe.text.make('', 'freesansbold.ttf', int(data.mS[0]/20),data.center,(pe.color.black, None))
+  timeT = pe.text.make('--:--', 'freesansbold.ttf', int(data.mS[0]/20), pe.math.center((0, data.center[1], data.center[0]/2, data.mS[1]/2)),(pe.colors.black, None))
+  nameT = pe.text.make('', 'freesansbold.ttf', int(data.mS[0]/20),data.center,(pe.colors.black, None))
   tm = lookup.get("tokenmng")
   tm.load()
   settings = getS(tm.current_user)
@@ -44,7 +44,7 @@ def openUP():
   pe = lookup.get("PGE")
   ezt = lookup.get("EZtext")
   if localSettings.lock == 0:
-    text = ezt.fit("Login", pe.color.black, (data.center[0] - int(data.mS[0] / 10 / 2), data.center[1] + int(data.mS[0] / 20 / 2), int(data.mS[0] / 10),int(data.mS[0] / 35)))
+    text = ezt.fit("Login", pe.colors.black, (data.center[0] - int(data.mS[0] / 10 / 2), data.center[1] + int(data.mS[0] / 20 / 2), int(data.mS[0] / 10),int(data.mS[0] / 35)))
 
 def unlock(code=""):
   tm = lookup.get("tokenmng")
@@ -120,7 +120,7 @@ def draw():
     s.fill((0, 0, 0))
     pe.display.blit.rect(s, (rect[0], rect[1]))
 
-    #pe.draw.circle(pe.color.white,(data.center[0],data.center[1]-int(data.mS[1] / 4)),int(data.mS[0] / 12),0)
+    #pe.draw.circle(pe.colors.white,(data.center[0],data.center[1]-int(data.mS[1] / 4)),int(data.mS[0] / 12),0)
     user = um.load.user(tm.current_user)
     if localSettings.pfp != "NONE":
       lookup.get("EZimage").image(lookup.get("circlepfp").username(user.name), (int(data.mS[0] / 6), int(data.mS[0] / 6)), (data.center[0]-int(data.mS[0] / 12), data.center[1]-int(data.mS[1] / 4)-int(data.mS[0] / 12)))

@@ -40,5 +40,5 @@ def draw(red=None,red2=None,red3=None,red4=None,off=(0,0)):
     y+=ic
     pe.draw.rect(red4,(offx,y,data.mS[0]+offy,ic), 0)
     y+=ic
-  #pe.draw.circle(pe.color.black, (data.center[0] + offx, data.center[1] + offy), 5, 0)
-  #pe.draw.rect(pe.color.black, (offx, offy, data.mS[0], data.mS[1]), 15)
+  #pe.draw.circle(pe.colors.black, (data.center[0] + offx, data.center[1] + offy), 5, 0)
+  #pe.draw.rect(pe.colors.black, (offx, offy, data.mS[0], data.mS[1]), 15)
