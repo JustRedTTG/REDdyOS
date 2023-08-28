@@ -1,7 +1,7 @@
 import pygameextra as pe
 
-m = []
-apps = []
+m: dict
+apps: dict = {}
 screen = 0
 theme = 0
 events = None

@@ -114,14 +114,14 @@ def draw():
       vsmol = int(175 / 10)
       center = (int(175 / 2), 50)
       #
-      screenS = pe.display_a
+      screenS = pe.display.display_reference
 
       pe.button.rect((250+5,25+5,185,110),pe.colors.white,(200,200,200),action=settheme,data=0)
       pe.button.rect((250+25+175,25+5,185,110),pe.colors.white,(200,200,200),action=settheme,data=1)
 
       # THEME 1
       smallT = pe.pygame.Surface((175,100))
-      pe.display.set(smallT)
+      pe.display.context(smallT)
       pe.fill.full(data.red)
       pe.draw.circle(data.red4, center, full, 0)
       pe.draw.circle(data.red3, center, half, 0)
@@ -131,7 +131,7 @@ def draw():
       #
       # THEME 2
       smallT2 = pe.pygame.Surface((175, 100))
-      pe.display.set(smallT2)
+      pe.display.context(smallT2)
       pe.fill.full(data.red)
       ic = 25
       y = 0
@@ -143,7 +143,7 @@ def draw():
       y += ic
       pe.draw.rect(data.red4, (0, y, data.display_rect.width, ic), 0)
       #
-      pe.display.set(screenS)
+      pe.display.context(screenS)
       pe.display.blit.rect(smallT,(250+10,25+10))
       pe.display.blit.rect(smallT2,(250+175+30,25+10))
       x=255

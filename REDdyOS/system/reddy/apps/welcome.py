@@ -21,27 +21,26 @@ def verify():
     return 'app'
 
 
-def newCommon():
-    class commonsV:
-        __qualname__ = 'newCommon.<locals>.commonsV'
-        icon = data.files + 'reddy/icons/home.png'
-        window_size = (700, 525)
-        window_type = 0
-        window_pos = (
-        data.display_rect.width - int(window_size[0] / 2), data.display_rect.height - int(window_size[1] / 2))
-        title = '~Welcome~'
-        name = 'Welcome!'
-
-    return commonsV
-
-
 def init(dataV, lookupV, allow=(True,)):
     global data, lookup, commons, pe, time, framehost, FID, text
     data = dataV
     lookup = lookupV
-    commons = newCommon()
+
+    pe = lookup.get('PGE')
+
+    commons = {
+        "icon": data.files + 'reddy/icons/home.png',
+        "window_size": (700, 525),
+        "window_type": 0,
+        "window_pos": (0, 0),
+        "title": '~Welcome~',
+        "name": 'Welcome!'
+    }
+
+    window_rect = pe.rect.Rect(0, 0, *commons['window_size'])
+    window_rect.center = data.display_rect.center
+    commons['window_pos'] = window_rect.topleft
     if allow:
-        pe = lookup.get('PGE')
         time = lookup.get('time')
         framehost = lookup.get('FHost')
         FID = framehost.setup('welcome', commons)

@@ -14,18 +14,17 @@ import requests
 import zipfile
 import socket
 
-commons = ["PGE", "os", "time", "importlib.util", "math", "random", "PIL.Image", "PIL.ImageDraw", "numpy", "_thread",
-           "requests", "zipfile", "socket"]
-data.m = [["PGE", pe], ["os", os], ["time", time], ["importlib.util", importlib.util], ["math", math],
-          ["random", random], ["PIL.Image", Image], ["PIL.ImageDraw", ImageDraw], ["numpy", numpy],
-          ["_thread", _thread], ["requests", requests], ["zipfile", zipfile], ["socket", socket]]
+data.m = {"PGE": pe, "os": os, "time": time, "importlib.util": importlib.util, "math": math,
+          "random": random, "PIL.Image": Image, "PIL.ImageDraw": ImageDraw, "numpy": numpy,
+          "_thread": _thread, "requests": requests, "zipfile": zipfile, "socket": socket}
+commons = data.m.keys()
 pe.init()
 
 m = [''] * 20
 lock = [''] * 20
 for x in range(20):
     m[x] = random.randint(0, 61)
-    lock[x] = m[x]
+lock[x] = m[x]
 i = len(m) - 1
 i1 = 0
 fk = ''
@@ -90,51 +89,55 @@ logall = False
 crashlog = True
 
 
-def run(spath, user="", dataV=None):
+def open_module(spath: str):
     spec = importlib.util.spec_from_file_location(os.path.basename(spath).replace(".py", ""), os.path.realpath(spath))
-    m = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(m)
-    type = m.verify()
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    module_type = module.verify()
+    return module, module_type
+
+
+def run(spath, user="", dataV=None):
+    module, module_type = open_module(spath)
     global data, lookup, fk, key
-    if type == "module":
-        name = m.init(data, lookup)
+    if module_type == "module":
+        name = module.init(data, lookup)
         if name == "adminmng":
-            m.init(data, lookup, fk, key)
-        data.m.append([name, m])
+            module.init(data, lookup, fk, key)
+        data.m[name] = module
         if log:
             print("run module", name, user)
-    elif type == "app":
+    elif module_type == "app":
         if dataV == None:
-            moduledata = m.init(data, lookup)
+            moduledata = module.init(data, lookup)
         else:
-            moduledata = m.init(data, lookup, dataV)
+            moduledata = module.init(data, lookup, dataV)
         name = moduledata[0]
         for app in data.apps:
             if app[0] == name:
                 return
-        piority = moduledata[1]
+        priority = moduledata[1]
         screen = moduledata[2]
-        data.apps.append([name, piority, screen, m, 0, None])
+        data.apps[name] = {
+            "priority": priority, "screen": screen, "module": module, 'focus': 0, 'admin': None
+        }
         data.focus = name
         if logall:
             print("run app", name, user)
 
 
-def runadmin(spath, user=""):
-    spec = importlib.util.spec_from_file_location(os.path.basename(spath).replace(".py", ""), os.path.realpath(spath))
-    m = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(m)  # problemic
-    type = m.verify()
+def run_admin(spath, user=""):
+    module, type = open_module(spath)
     global data, lookup, fk, key
     if type == "app":
-        moduledata = m.init(data, lookup)
-        name = moduledata[0]
-        for app in data.apps:
-            if app[0] == name:
+        name, priority, screen = module.init(data, lookup)
+        for app_name, _ in data.apps.items():
+            if app_name == name:
                 return
-        piority = moduledata[1]
-        screen = moduledata[2]
-        data.apps.append([name, piority, screen, m, 0, [fk, (key * (len(data.apps))) / math.pi]])
+        data.apps[name] = {
+            "priority": priority, "screen": screen, "module": module, "focus": 0,
+            "admin": [fk, (key * (len(data.apps))) / math.pi]
+        }
         data.focus = name
         if logall:
             print("[admin] run app", name, user)
@@ -254,73 +257,76 @@ class adminoper:
                 i += 1
 
     def runadmin(spath, user=""):
-        runadmin(data.files + spath, user)
+        run_admin(data.files + spath, user)
 
-    def runclass(m, name, screen, piority):
-        m.init(data, lookup)
-        data.apps.append([name, piority, screen, m, 0, None])
+    def runclass(module, name, screen, priority):
+        module.init(data, lookup)
+        data.apps[name] = {
+            "priority": priority, "screen": screen,
+            "module": module, "focus": 0, "admin": None
+        }
 
-    def runadminclass(m, name, screen, piority):
-        m.init(data, lookup)
-        data.apps.append([name, piority, screen, m, 0, [fk, (key * (len(data.apps))) / math.pi]])
+    def runadminclass(module, name, screen, priority):
+        module.init(data, lookup)
+        data.apps[name] = {
+            "priority": priority, "screen": screen, "module": module, "focus": 0,
+            "admin": [fk, (key * (len(data.apps))) / math.pi]
+        }
 
 
-def runall(sc):
+def runall(target_screen):
     global data, fk, adminoper
     atr = []
-    g = 0
-    while g <= len(data.apps) - 1:
-        if data.apps[g][2] == sc:
-            atr.append(data.apps[g])
-        if data.apps[g][0] == data.focus:
-            data.apps[g][4] = 0
+    for app_name, app in data.apps.items():
+        if app['screen'] == target_screen:
+            atr.append(app)
+        if app_name == data.focus:
+            app['focus'] = 0
         else:
-            data.apps[g][4] += 1
-        g += 1
-    i = 0
-    p = 0
+            app['focus'] += 1
+    app = 0
+    prioritized_apps = 0
     allpon = []
-    high = 0
-    for i in atr:
-        if i[4] > high:
-            high = i[4]
-        allpon.append(i[4])
+    highest_focus = 0
+    for app in atr:
+        highest_focus = max(app['focus'], highest_focus)
+        allpon.append(app['focus'])
     allpon = sorted(allpon)
     pi = len(allpon) - 1
     fsort = []
     if len(allpon) > 0:
         while pi >= 0:
-            for i in atr:
-                if i[4] == allpon[pi]:
-                    fsort.append(i)
+            for app in atr:
+                if app['focus'] == allpon[pi]:
+                    fsort.append(app)
                     pi -= 1
     psort = [[], [], [], [], [], [], [], [], [], [], []]
-    for x in fsort:
-        psort[x[1]].append(x)
-    for p in psort:
-        for item in p:
-            if item[5] != None:
-                i = 0
+    for app in fsort:
+        psort[app['priority']].append(app)
+    for prioritized_apps in psort:
+        for app in prioritized_apps:
+            if app["admin"] != None:
+                app = 0
                 for app in data.apps:
-                    if app[0] == item[0]:
-                        ll = ((item[5][1] * math.pi) / (i + 1))
-                        if decript(ll, item[5][0]) == fk:
-                            item[3].admincall(adminoper)
+                    if app[0] == app[0]:
+                        ll = ((app[5][1] * math.pi) / (app + 1))
+                        if decript(ll, app[5][0]) == fk:
+                            app[3].admincall(adminoper)
                         # else:
                         # print("decript:",decript(ll,item[5][0]),"fk:",fk,"d key:",ll,"o key:",key/math.pi)
                     else:
-                        i += 1
+                        app += 1
             if not crashlog:
                 try:
-                    if logall and item[3].draw != None:
-                        print("DRAW call to", item[0])
-                    item[3].draw()
+                    if logall and app[3].draw != None:
+                        print("DRAW call to", app[0])
+                    app[3].draw()
                 except:
-                    data.operations.append("close " + item[0])
+                    data.operations.append("close " + app[0])
             else:
                 if logall:
-                    print("DRAW call to", item[0])
-                item[3].draw()
+                    print("DRAW call to", app[0])
+                app[3].draw()
 
 
 def runallm():
@@ -429,15 +435,15 @@ def boot_animation(color):
         pe.draw.circle(pe.colors.black, eye_point, data.display_rect.width / 120, 0)
 
 
+pe.display.make(pe.display.get_max(), "REDdyOS", 1)
+
 while True:
-    pe.display.make(pe.display.get_max(), "REDdyOS", 1)
-    lookup.set(data.m)
     lookup.set(data.m)
     lookup.setapp(data.apps)
     gMS()
     data.events = pe.event.get()
     if data.resetDis != None:
-        pe.display.set(data.resetDis)
+        pe.display.context(data.resetDis)
         data.resetDis = None
     if data.screen != 0:
         if logall:
@@ -484,7 +490,7 @@ while True:
             elif startup[startupI].split(" ")[0] == "runadmin":
                 boot_animation(pe.colors.aqua)
                 data.centerTSX.offset += 1.5
-                runadmin(data.files + startup[startupI].split(" ")[1], "[admin] *STARTUP*")
+                run_admin(data.files + startup[startupI].split(" ")[1], "[admin] *STARTUP*")
                 startupI += 1
             else:
                 boot_animation(data.red)
