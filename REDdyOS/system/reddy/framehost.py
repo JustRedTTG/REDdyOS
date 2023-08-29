@@ -109,16 +109,10 @@ def draw_frame(app, ID):
             pe.button.rect((app['commons']['window_pos'][0] + app['commons']['window_size'][0] - 35, app['commons']['window_pos'][1], 35, 20),
                            pe.colors.red, pe.colors.pink, action=close, data=ID)
         mouse.addoff()
-        try:
-            apps[ID]
-        except:
-            if rem != None:
-                pe.display.context(rem)
-            return
-        apps[ID][3] = pe.Surface(app['commons']['window_size'])
-        buldge = 3
+        apps[ID]['surface'] = pe.Surface(app['commons']['window_size'])
+        buldge = 2
         pe.draw.rect(pe.colors.black,
-                     (app['commons']['window_pos'][0], app['commons']['window_pos'][1], app['commons']['window_size'][0], app['commons']['window_size'][1] + 20),
+                     (*app['commons']['window_pos'], app['commons']['window_size'][0], app['commons']['window_size'][1] + 20),
                      buldge)
         pe.draw.line(pe.colors.black, (app['commons']['window_pos'][0], app['commons']['window_pos'][1] + 20),
                      (app['commons']['window_pos'][0] + app['commons']['window_size'][0], app['commons']['window_pos'][1] + 20), buldge)
@@ -216,14 +210,7 @@ def clickOut():
 
 
 def remove():
-    i = 0
-    while i < len(apps):
-        if apps[i] == app:
-            del apps[i]
-            return
-        else:
-            pass
-        i += 1
+    pass
 
 
 def beforeendcall():

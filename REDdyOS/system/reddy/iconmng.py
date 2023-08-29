@@ -40,7 +40,7 @@ def drawIcon(rect,file,window_pos=(0,0),icon=None):
       double[1]-=1
   elif double[1]<=0:
     double=[False,10]
-  s = pe.pygame.Surface((rect[2], rect[3]))
+  s = pe.Surface((rect[2], rect[3]))
   if file in selects:
     s.set_alpha(150)
     s.fill((255, 255, 255))

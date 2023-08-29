@@ -10,5 +10,5 @@ run reddy/easytext.py
 run reddy/adminmng.py
 
 run reddy/themes.py
-runadmin reddy/apps/welcome.py
-screen 1
+runadmin reddy/apps/testingChaimber.py
+screen 2

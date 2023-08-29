@@ -9,7 +9,7 @@ def init(dataV,lookupV):
   return "alpha"
 
 def alpha(color,aplha,rect):
-  s = pe.pygame.Surface((rect[2], rect[3]))
+  s = pe.Surface((rect[2], rect[3]))
   s.set_alpha(aplha)
   s.fill(color)
   pe.display.blit.rect(s, (rect[0], rect[1]))

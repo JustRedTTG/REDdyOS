@@ -58,7 +58,7 @@ def call():
   if data.screen == 3:
     if admin != None:
       lookup.get("mouse").removeoff()
-      s = pe.pygame.Surface((data.display_rect.width, data.display_rect.height))
+      s = pe.Surface((data.display_rect.width, data.display_rect.height))
       s.set_alpha(200)
       s.fill((0, 0, 0))
       rect = (data.display_rect.width / 2 - 225, data.display_rect.height / 2 - 125, 450, 250)

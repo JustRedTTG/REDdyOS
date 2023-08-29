@@ -33,7 +33,7 @@ def init(dataV, lookupV, allow=(True,)):
         "window_size": (700, 525),
         "window_type": 0,
         "window_pos": (0, 0),
-        "title": '~Welcome~',
+        "title": '~Welcome to REDdyOS~',
         "name": 'Welcome!'
     }
 
@@ -112,4 +112,3 @@ def draw():
     framehost.screen(FID)
     pe.fill.full(color.background)
     framehost.exit(FID)
-    # cycleTSX = pe.math.tsx.make((commons.window_pos[0] + 75, commons.window_pos[1] + 100), 35)

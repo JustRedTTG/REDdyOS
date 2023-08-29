@@ -104,7 +104,7 @@ def draw():
     timeT.init(timeT)
 
     rect = (0,data.display_rect.height-d,data.display_rect.width,data.display_rect.height)
-    s = pe.pygame.Surface((rect[2], rect[3]))
+    s = pe.Surface((rect[2], rect[3]))
     s.set_alpha((d/50)*(data.display_rect.height/100))
     s.fill((0, 0, 0))
     pe.display.blit.rect(s, (rect[0], rect[1]))
@@ -115,7 +115,7 @@ def draw():
     tm = lookup.get("tokenmng")
 
     rect = (0, 0,data.display_rect.width,data.display_rect.height)
-    s = pe.pygame.Surface((rect[2], rect[3]))
+    s = pe.Surface((rect[2], rect[3]))
     s.set_alpha(100)
     s.fill((0, 0, 0))
     pe.display.blit.rect(s, (rect[0], rect[1]))

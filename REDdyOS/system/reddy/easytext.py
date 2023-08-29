@@ -92,7 +92,7 @@ class textbox:
         elif ctext['rect'] != rect:
             ctext['font'] = pe.pygame.font.Font(None, rect[2])
 
-        surface = pe.pygame.Surface((rect[2], rect[3]))
+        surface = pe.Surface((rect[2], rect[3]))
         Srect = (0, 0, rect[2], rect[3])
         last = pe.display.display_reference
         pe.display.context(surface)
@@ -103,7 +103,7 @@ class textbox:
         cursorX = tS.get_width() + 2
         if cursorX > rect[2]:
             cursorX = rect[2] - (rect[3] / 2)
-        surface.blit(tS, (2 + cursorX - tS.get_width(), 5))
+        surface.stamp(tS, (2 + cursorX - tS.get_width(), 5))
         pe.draw.rect(outline, Srect, outlinewidth)
         if ctext["cursorTick"] <= 10:
             pe.draw.line(pe.colors.black, (cursorX + 2, outlinewidth + 2), (cursorX + 2, rect[3] - outlinewidth - 2), 2)
@@ -113,5 +113,5 @@ class textbox:
             ctext["cursorTick"] += 1
         #
         pe.display.context(last)
-        pe.display.blit.rect(surface, rect)
+        pe.display.blit(surface, rect)
         return ctext

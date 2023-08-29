@@ -69,7 +69,7 @@ def draw():
     #data.display_rect.center = (data.display_rect.center[0],data.display_rect.center[1]-25)
     lookup.get("DrawATheme").draw(off=(250,25))
     rect = (250, 25, data.display_rect.width, data.display_rect.height)
-    s = pe.pygame.Surface((rect[2], rect[3]))
+    s = pe.Surface((rect[2], rect[3]))
     s.set_alpha(100)
     s.fill((0, 0, 0))
     pe.display.blit.rect(s, (rect[0], rect[1]))
@@ -120,7 +120,7 @@ def draw():
       pe.button.rect((250+25+175,25+5,185,110),pe.colors.white,(200,200,200),action=settheme,data=1)
 
       # THEME 1
-      smallT = pe.pygame.Surface((175,100))
+      smallT = pe.Surface((175,100))
       pe.display.context(smallT)
       pe.fill.full(data.red)
       pe.draw.circle(data.red4, center, full, 0)
@@ -130,7 +130,7 @@ def draw():
       pe.draw.line(data.red, (center[0], 0), (center[0], 100), vsmol)
       #
       # THEME 2
-      smallT2 = pe.pygame.Surface((175, 100))
+      smallT2 = pe.Surface((175, 100))
       pe.display.context(smallT2)
       pe.fill.full(data.red)
       ic = 25
