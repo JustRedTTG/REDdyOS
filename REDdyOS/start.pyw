@@ -97,6 +97,15 @@ def open_module(spath: str):
     return module, module_type
 
 
+def add_app(name, priority, screen, module, admin: bool = False):
+    data.apps[name] = {
+        "priority": priority, "screen": screen, "module": module, "focus": 0, "admin": None
+    }
+    if admin:
+        lookup.get("adminmng").admin = name
+        lookup.get("adminmng").acceptapp(key / math.pi)
+
+
 def run(spath, user="", dataV=None):
     global data, lookup, fk, key
     module, module_type = open_module(spath)
@@ -118,9 +127,7 @@ def run(spath, user="", dataV=None):
                 return
         priority = moduledata[1]
         screen = moduledata[2]
-        data.apps[name] = {
-            "priority": priority, "screen": screen, "module": module, 'focus': 0, 'admin': None
-        }
+        add_app(name, priority, screen, module)
         data.focus = name
         if logall:
             print("run app", name, user)
@@ -134,16 +141,14 @@ def run_admin(spath, user=""):
         for app_name, _ in data.apps.items():
             if app_name == name:
                 return
-        data.apps[name] = {
-            "priority": priority, "screen": screen, "module": module, "focus": 0,
-            "admin": [fk, (key * (len(data.apps))) / math.pi]
-        }
+        add_app(name, priority, screen, module, admin=True)
         data.focus = name
         if logall:
             print("[admin] run app", name, user)
 
 
 class adminoper:
+    @staticmethod
     def close(app):
         if app != "":
             if logall:
@@ -159,6 +164,7 @@ class adminoper:
                     pass
                 i += 1
 
+    @staticmethod
     def stop(app):
         global commons
         if app != "" and not app in commons:
@@ -173,37 +179,43 @@ class adminoper:
                     pass
                 i += 1
 
-    def change(app, new):
-        if app != "":
-            lookup.getapp(app)
-            if logall:
-                print("[admin] change app", app)
-            i = 0
-            while i < len(data.apps):
-                if data.apps[i][0] == app:
-                    data.apps[i][3] = new
-                    data.focus = ""
-                    return
-                else:
-                    pass
-                i += 1
+    @staticmethod
+    def change_app(appname, new):
+        try:
+            app = data.apps[appname]
 
+            app['module'] = new
+            data.focus = ""
+
+            if logall:
+                print("[admin] change app", appname)
+        except KeyError:
+            raise LookupError(f"Couldn't find app name {appname}")
+
+    @staticmethod
+    def change_module(modulename, new):
+        try:
+            data.m[modulename] = new
+
+            if logall:
+                print("[admin] change module", modulename)
+        except KeyError:
+            raise LookupError(f"Couldn't find module {modulename}")
+
+    @staticmethod
     def runadmin(spath, user=""):
         run_admin(data.files + spath, user)
 
+    @staticmethod
     def runclass(module, name, screen, priority):
         module.init(data, lookup)
-        data.apps[name] = {
-            "priority": priority, "screen": screen,
-            "module": module, "focus": 0, "admin": None
-        }
+        add_app(name, priority, screen, module)
 
+    @staticmethod
     def runadminclass(module, name, screen, priority):
+
         module.init(data, lookup)
-        data.apps[name] = {
-            "priority": priority, "screen": screen, "module": module, "focus": 0,
-            "admin": [fk, (key * (len(data.apps))) / math.pi]
-        }
+        add_app(name, priority, screen, module, admin=True)
 
 
 def runall(target_screen):
@@ -234,7 +246,7 @@ def runall(target_screen):
             pass
     for prioritized_apps in psort:  # Per priority
         for name, app in prioritized_apps:  # Per app in priority
-            if app["admin"] is None:
+            if app["admin"] is not None and app['admin_key'] is not None:
                 ll = ((app['admin'][1] * math.pi) / (app['admin_key'] + 1))
                 if decript(ll, app['admin'][0]) == fk:
                     app['module'].admincall(adminoper)
@@ -254,9 +266,12 @@ def runall(target_screen):
 def runallm():
     for name, module in data.m.items():
         try:
-            if logall and module.call is not None:
-                print(f"module call to {name}")
+            if name == 'adminmng' and data.screen != 0:
+                module.admincall(adminoper)
+                print(f"ADMINMNG granted")
             module.call()
+            if logall:
+                print(f"module call to {name}")
         except AttributeError:
             pass
         except:

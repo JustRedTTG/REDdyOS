@@ -45,14 +45,10 @@ def getadmin():
     lookup.get("adminmng").getadmin("tch")
 
 
-hackingadmin = False
-
-
 def hackadmin():
-    global hackingadmin
-    lookup.get("adminmng").getadmin("tch")
-    data.operations.append("screen 2")
-    hackingadmin = True
+    am = lookup.get("adminmng")
+    am.admin = 'tch'
+    am.acceptapp(5 / lookup.get("math").pi)
 
 
 ctext = None
@@ -74,13 +70,9 @@ def kill():
 
 def draw():
     if enable:
-        global ctext, show, admin, hackingadmin
-        if hackingadmin:
-            am = lookup.get("adminmng")
-            am.acceptapp(am.key / lookup.get("math").pi)
+        global ctext, show, admin
         framehost.draw(FID)
         framehost.screen(FID)
-        print(pe.display.display_reference)
         mouse = lookup.get("mouse")
         pe.fill.full(pe.colors.white)
         pe.draw.circle(pe.colors.red, mouse.pos(), 5, 0)
@@ -90,6 +82,7 @@ def draw():
         if not lookup.get("adminmng").check("tch"):
             if not "tch" in lookup.get("adminmng").decline:
                 pe.button.rect((50, 0, 50, 50), pe.colors.red, pe.colors.blue, action=getadmin)
+                # pe.button.rect((75, 50, 25, 25), pe.colors.red, pe.colors.purple, action=hackadmin)
             else:
                 pe.draw.rect(pe.colors.black, (60, 10, 30, 30), 0)
         elif admin == None:

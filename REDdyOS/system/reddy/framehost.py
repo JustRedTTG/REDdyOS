@@ -16,16 +16,15 @@ def init(dataV, lookupV):
 apps = {}
 
 
-def generate_id(name):
-    random = lookup.get("random")
-    return name.join(chr(random.randint(97, 122)) for _ in range(10))
+
 
 
 def setup(name, commons):
     ezd = lookup.get("EZdrag")
+    adminmng = lookup.get("adminmng")
     position = commons['window_pos']
     size = commons['window_size']
-    ID = generate_id(name)
+    ID = adminmng.generate_id(name)
     apps[ID] = {
         'name': name,  # 0
         'commons': commons,  # 1
@@ -82,7 +81,7 @@ def exit(ID):
         raise AttributeError("framehost couldn't change the display back")
     pos = apps[ID]['commons']['window_pos']
     pe.display.blit(apps[ID]['surface'], (pos[0], pos[1] + 20))
-    lookup.get("mouse").removeoff()
+    lookup.get("mouse").remove_offset()
     if not drag:
         ezd = lookup.get("EZdrag")
         if apps[ID]['commons']['window_type'] == 1:
@@ -95,7 +94,7 @@ def draw_frame(app, ID):
     global drag, lastM
     if True:
         mouse = lookup.get("mouse")
-        mouse.removeoff()
+        mouse.remove_offset()
         if data.focus == app['name']:  # rect fill
             pe.draw.rect(data.red3, (app['commons']['window_pos'][0], app['commons']['window_pos'][1], app['commons']['window_size'][0], 20), 0)
         else:
@@ -108,7 +107,7 @@ def draw_frame(app, ID):
         else:
             pe.button.rect((app['commons']['window_pos'][0] + app['commons']['window_size'][0] - 35, app['commons']['window_pos'][1], 35, 20),
                            pe.colors.red, pe.colors.pink, action=close, data=ID)
-        mouse.addoff()
+        mouse.add_offset()
         apps[ID]['surface'] = pe.Surface(app['commons']['window_size'])
         buldge = 2
         pe.draw.rect(pe.colors.black,
@@ -132,7 +131,7 @@ def draw(ID):
     except:
         off = (0, 0)
     if not drag and app['commons']['window_type'] == 1:
-        lookup.get("mouse").removeoff()
+        lookup.get("mouse").remove_offset()
         ezd = lookup.get("EZdrag")
         s1 = ezd.central.drag_sizer(app['central_sizer'])
         # s2 = (ezd.horizontal.pager(app[6]),ezd.vertical.pager(app[7]))
@@ -148,7 +147,7 @@ def draw(ID):
         app['vertical_pager'].y = y
 
         app['commons']['window_size'] = (s[0] - p[0], s[1] - 20 - p[1])
-    pe.mouse.off = (off[0] * -1, off[1] * -1)
+    mouse.set_offset((off[0] * -1, off[1] * -1))
     if True:
         rect = (app['commons']['window_pos'][0], app['commons']['window_pos'][1], app['commons']['window_size'][0] - 35, 20)
         if not drag:

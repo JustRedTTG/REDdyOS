@@ -151,7 +151,7 @@ class central:
     global drag, lastM
     s.rect = (s.x - s.width / 2, s.y - s.height / 2, s.width, s.height)
     mouse = lookup.get("mouse")
-    mouse.removeoff()
+    mouse.remove_offset()
     if mouse.Wx() > s.rect[0] and mouse.Wx() < s.rect[0] + s.rect[2] and mouse.Wy() > s.rect[1] and mouse.Wy() < s.rect[1] + s.rect[3]:
       mouse.seticon(icons.sizer,True)
       if not lastM and drag == None and mouse.left():
@@ -167,7 +167,7 @@ class central:
           y += 1
 
         drag = [s, x, y, s.type, "sizer"]
-    mouse.addoff()
+    mouse.add_offset()
     return (s.x,s.y)
   def draw_sizer(s):
     s.rect = (s.x - s.width / 2, s.y - s.height / 2, s.width, s.height)
@@ -178,7 +178,7 @@ class central:
 def call():
   global drag
   mouse = lookup.get("mouse")
-  mouse.removeoff()
+  mouse.remove_offset()
   if lastM and not mouse.left():
     drag = None
   if drag != None:
@@ -203,7 +203,7 @@ def call():
         drag[0].x = drag[0].block[1][0]
       if drag[0].y > drag[0].block[1][1]:
         drag[0].y = drag[0].block[1][1]
-  mouse.addoff()
+  mouse.add_offset()
 
 def endcall():
   global lastM

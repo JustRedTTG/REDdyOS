@@ -62,7 +62,7 @@ def setpfp(image):
 lastM=False
 def draw():
   global cubeyP,cubeyT,ticks,screen,lastM
-  lookup.get("mouse").removeoff()
+  lookup.get("mouse").remove_offset()
   if screen > 1:
     data.mS = (data.display_rect.width-250,data.display_rect.height-25)
     data.display_rect.center = pe.math.center((0,0,data.display_rect.width,data.display_rect.height))

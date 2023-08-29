@@ -27,21 +27,27 @@ def seticon(i, c=False):
         iconoff = (-10, -10)
 
 
-def removeoff():
-    global off
-    off = pe.mouse.off
-    pe.mouse.off = (0, 0)
+def set_offset(offset):
+    pe.settings.spoof_mouse_offset = offset
 
 
-def addoff():
+def remove_offset():
     global off
-    pe.mouse.off = off
+    off = pe.settings.spoof_mouse_offset
+    set_offset(None)
+    pe.settings.spoof_enabled = False
+
+
+def add_offset():
+    global off
+    set_offset(off)
+    pe.settings.spoof_enabled = True
 
 
 def pos():
-    removeoff()
+    remove_offset()
     p = pe.mouse.pos()
-    addoff()
+    add_offset()
     return p
 
 
@@ -98,7 +104,7 @@ def call():
         off = (off[0], off[1] + 20)
     except:
         off = (0, 0)
-    pe.mouse.off = (off[0] * -1, off[1] * -1)
+    pe.settings.spoof_mouse_offset = (off[0] * -1, off[1] * -1)
 
 
 def endcall():
