@@ -12,19 +12,21 @@ library = {
     "stgmng": "reddy/stgmng.py",
     "usrmng": "reddy/usrmng.py",
     "iconmng": "reddy/iconmng.py",
-    "EZtext": "reddy/easytext.py",
     "adminmng": "reddy/adminmng.py",
     "DrawATheme": "reddy/themes.py",
     "FHost": "reddy/framehost.py",
     "hcircle": "reddy/halfcircle.py",
-    "EZdrag": "reddy/easydrags.py",
     "tskBAR": "reddy/taskbar.py",
     "settings": "reddy/apps/settings.py",
     "circlepfp": "reddy/circlepfp.py",
     "lighten": "reddy/lighten.py",
     "downFile": "reddy/downFile.py",
     "alpha": "reddy/alpha.py",
+
     "EZimage": "reddy/easyImage.py",
+    "EZtext": "reddy/easytext.py",
+    "EZround": "reddy/roundness.py",
+    "EZdrag": "reddy/easydrags.py",
 }
 
 

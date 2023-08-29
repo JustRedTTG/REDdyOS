@@ -1,4 +1,4 @@
-data, lookup, pe = None, None, None
+data, lookup, pe, mouse, ezd, ezt, ezr = None, None, None, None, None, None, None
 
 
 def verify():
@@ -6,47 +6,46 @@ def verify():
 
 
 def init(dataV, lookupV):
-    global data, lookup, pe
+    global data, lookup, pe, mouse, ezd, ezt, ezr
     data = dataV
     lookup = lookupV
     pe = lookup.get("PGE")
+    mouse = lookup.get("mouse")
+    ezd = lookup.get("EZdrag")
+    ezt = lookup.get("EZtext")
+    ezr = lookup.get("EZround")
     return "FHost"
 
 
 drag = False
 lastM = False
 LINE_WIDTH = 2
-TOP_HEIGHT = 20
+TOP_HEIGHT = 25
 TOTAL_HEIGHT = LINE_WIDTH + TOP_HEIGHT
-
-
-def close(name: str):
-    data.operations.append(f"close {name} *Frame-Host*")
-    [apps.pop(ID) for ID, app in apps.items() if self.name == name]
-
+BORDER_RADIUS = 10
 
 rem = None
 
 
-def clickOut():
-    global lastM
-    for app in apps:
-        rect = (
-            self.commons['window_pos'][0], self.commons['window_pos'][1] - TOP_HEIGHT, self.commons['window_size'][0] + 2,
-            self.commons['window_size'][1] + TOTAL_HEIGHT)
-        mouse = lookup.get("mouse")
-        if mouse.y() < data.display_rect.height - 35 and data.focus != "home":
-            if mouse.x() > rect[0] and mouse.x() < rect[0] + rect[2] and mouse.y() > rect[1] and mouse.y() < rect[1] + \
-                    rect[3]:
-
-                if data.focus != app[0] and not lastM:
-                    data.operations.append("focus " + app[0])
-
-                return False
-            else:
-                return True
-        else:
-            return False
+# def clickOut():
+#     global lastM
+#     for app in apps:
+#         rect = (
+#             self.commons['window_pos'][0], self.commons['window_pos'][1] - TOP_HEIGHT, self.commons['window_size'][0] + 2,
+#             self.commons['window_size'][1] + TOTAL_HEIGHT)
+#         mouse = lookup.get("mouse")
+#         if mouse.y() < data.display_rect.height - 35 and data.focus != "home":
+#             if mouse.x() > rect[0] and mouse.x() < rect[0] + rect[2] and mouse.y() > rect[1] and mouse.y() < rect[1] + \
+#                     rect[3]:
+#
+#                 if data.focus != app[0] and not lastM:
+#                     data.operations.append("focus " + app[0])
+#
+#                 return False
+#             else:
+#                 return True
+#         else:
+#             return False
 
 
 def remove():
@@ -55,7 +54,7 @@ def remove():
 
 def beforeendcall():
     global lastM, appsThis, appsRAN
-    lastM = lookup.get("mouse").left()
+    lastM = mouse.left()
     # for app in appsRAN:
     #  if not app in appsThis:
     #    draw(app)
@@ -66,8 +65,6 @@ def beforeendcall():
 
 class Frame:
     def __init__(self, name, commons):
-        ezd = lookup.get("EZdrag")
-        adminmng = lookup.get("adminmng")
         position = commons['window_pos']
         size = commons['window_size']
         self.name = name  # 0
@@ -104,17 +101,22 @@ class Frame:
         global rem
         try:
             self.surface = pe.display.display_reference
-        except KeyError:
-            raise LookupError(f"framehost couldn't find `{ID}`")
+        except AttributeError:
+            return
         try:
             pe.display.context(rem)
         except:
             raise AttributeError("framehost couldn't change the display back")
         pos = self.commons['window_pos']
-        pe.display.blit(self.surface, (pos[0], pos[1] + TOP_HEIGHT + LINE_WIDTH))
-        lookup.get("mouse").remove_offset()
+        # pe.display.blit(self.surface, (pos[0], pos[1] + TOP_HEIGHT + LINE_WIDTH))
+        pe.pygame.gfxdraw.textured_polygon(
+            pe.display.display_reference.surface,
+            ezr.round_rect(
+                (pos[0], pos[1] + TOTAL_HEIGHT, *self.commons['window_size']),
+                BORDER_RADIUS, top_left=False, top_right=False
+            ), self.surface.surface, pos[0], (pos[1] + TOTAL_HEIGHT) * -1)
+        mouse.remove_offset()
         if not drag:
-            ezd = lookup.get("EZdrag")
             if self.commons['window_type'] == 1:
                 ezd.central.draw_sizer(self.central_sizer)
                 # ezd.horizontal.draw_pager(apps[ID][6])
@@ -122,28 +124,24 @@ class Frame:
 
     def draw_frame(self):
         global drag, lastM
-        mouse = lookup.get("mouse")
         mouse.remove_offset()
         if data.focus == self.name:  # rect fill
-            pe.draw.rect(data.red3, (
-                self.commons['window_pos'][0], self.commons['window_pos'][1], self.commons['window_size'][0],
-                TOP_HEIGHT),
-                         0)
-        else:
-            pe.draw.rect(data.red4, (
-                self.commons['window_pos'][0], self.commons['window_pos'][1], self.commons['window_size'][0],
-                TOP_HEIGHT),
-                         0)
+            pe.draw.polygon(
+                data.red3 if data.focus == self.name else data.red4,
+                ezr.round_rect((self.commons['window_pos'][0],
+                                self.commons['window_pos'][1],
+                                self.commons['window_size'][0],
+                                TOP_HEIGHT),
+                               BORDER_RADIUS, bottom_left=False, bottom_right=False), 0)
+
+        x_button_rect = (self.commons['window_pos'][0] + self.commons['window_size'][0] - TOP_HEIGHT,
+                         self.commons['window_pos'][1], TOP_HEIGHT, TOP_HEIGHT)
 
         # X button
         if drag or lastM:
-            pe.draw.rect(pe.colors.red,
-                         (self.commons['window_pos'][0] + self.commons['window_size'][0] - 35,
-                          self.commons['window_pos'][1], 35, TOP_HEIGHT), 0)
+            pe.draw.rect(pe.colors.red, x_button_rect, 0)
         else:
-            pe.button.rect((self.commons['window_pos'][0] + self.commons['window_size'][0] - 35,
-                            self.commons['window_pos'][1], 35, TOP_HEIGHT),
-                           pe.colors.red, pe.colors.pink, action=close, data=self.name)
+            pe.button.rect(x_button_rect, pe.colors.red, pe.colors.pink, action=self.close)
         mouse.add_offset()
         self.surface = pe.Surface(self.commons['window_size'])
         pe.draw.line(pe.colors.black, (self.commons['window_pos'][0], self.commons['window_pos'][1] + TOP_HEIGHT),
@@ -151,23 +149,20 @@ class Frame:
                       self.commons['window_pos'][1] + TOP_HEIGHT), LINE_WIDTH)
 
     def draw_frame_outline(self):
-        pe.draw.rect(pe.colors.black,
-                     (*self.commons['window_pos'], self.commons['window_size'][0],
-                      self.commons['window_size'][1] + TOTAL_HEIGHT),
-                     LINE_WIDTH // 2)
+        rect = (*self.commons['window_pos'], self.commons['window_size'][0],
+                self.commons['window_size'][1] + TOTAL_HEIGHT)
+        pe.draw.polygon(pe.colors.black, ezr.round_rect(rect, BORDER_RADIUS), LINE_WIDTH // 2)
 
     def draw(self):
         # print("framehost draw",ID)
         global drag, lastM
-        mouse = lookup.get("mouse")
         try:
             off = self.commons['window_pos']
             off = (off[0], off[1] + TOP_HEIGHT)
         except KeyError:
             off = (0, 0)
         if not drag and self.commons['window_type'] == 1:
-            lookup.get("mouse").remove_offset()
-            ezd = lookup.get("EZdrag")
+            mouse.remove_offset()
             s1 = ezd.central.drag_sizer(self.central_sizer)
             # s2 = (ezd.horizontal.pager(app[6]),ezd.vertical.pager(app[7]))
             x = s1[0]
@@ -181,7 +176,7 @@ class Frame:
             self.vertical_pager.x = x / 2
             self.vertical_pager.y = y
 
-            self.commons['window_size'] = (s[0] - p[0], s[1] - TOP_HEIGHT - p[1])
+            self.window_size = (s[0] - p[0], s[1] - TOP_HEIGHT - p[1])
         mouse.set_offset((off[0] * -1, off[1] * -1))
         if True:
             rect = pe.rect.Rect(
@@ -208,7 +203,7 @@ class Frame:
             if drag and self.drag_position is not None:
                 x = self.drag_position[0]
                 y = self.drag_position[1]
-                self.commons['window_pos'] = (mouse.x() - x, mouse.y() - y)
+                self.window_pos = (mouse.x() - x, mouse.y() - y)
                 p = self.commons['window_pos']
                 s = self.commons['window_size']
                 self.central_sizer.x = p[0] + s[0] - 1
@@ -221,9 +216,28 @@ class Frame:
         except KeyError:
             title = self.name
         self.draw_frame()
-        lookup.get("EZtext").cram(title, pe.colors.black, (
-            self.commons['window_pos'][0], self.commons['window_pos'][1], self.commons['window_size'][0] - 35,
-            TOP_HEIGHT)).display()
+        ezt.cram(title, pe.colors.black, (
+            self.commons['window_pos'][0], self.commons['window_pos'][1], self.commons['window_size'][0] - TOP_HEIGHT,
+            TOP_HEIGHT), padding=5).display()
+
+    @property
+    def window_pos(self):
+        return self.commons['window_pos']
+
+    @window_pos.setter
+    def window_pos(self, value):
+        self.commons['window_pos'] = value
+
+    @property
+    def window_size(self):
+        return self.commons['window_size']
+
+    @window_size.setter
+    def window_size(self, value):
+        self.commons['window_size'] = value
+
+    def close(self):
+        data.operations.append(f"close {self.name} *Frame-Host*")
 
     def __enter__(self):
         self.draw()

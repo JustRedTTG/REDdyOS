@@ -7,7 +7,7 @@ theme = 0
 events = None
 files = ""
 display_rect: pe.pygame.Rect
-centerTSX: pe.TSX
+centerTSX: pe.TSX = None
 operations = []
 focus = ""
 current_user = ""

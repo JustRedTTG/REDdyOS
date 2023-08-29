@@ -16,7 +16,7 @@ def init(dataV, lookupV):
 class align:
     def init(textV):
         textV.pos = (
-        textV.original_pos[0] + pe.Layer[textV.layer][1][0], textV.original_pos[1] + pe.Layer[textV.layer][1][0])
+            textV.original_pos[0] + pe.Layer[textV.layer][1][0], textV.original_pos[1] + pe.Layer[textV.layer][1][0])
         textV.fonto = pe.pygame.font.Font(textV.font, textV.fontsize)
         textV.texto = textV.fonto.render(textV.text, True, textV.color, textV.background)
         textV.textRect = textV.texto.get_rect()
@@ -41,8 +41,8 @@ def size(text, color, rect, g=25):
     return pe.text.Text(text, 'freesansbold.ttf', g, pe.math.center(rect), (color, None))
 
 
-def cram(text, color, rect):
-    maxY = int(rect[3] * 0.9)
+def cram(text, color, rect, padding=0):
+    maxY = int(rect[3] * 0.9) - padding
     maxX = int(rect[2] / (rect[3] / 2))
     cram = False
     if maxX < len(text):

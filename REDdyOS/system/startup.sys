@@ -11,4 +11,5 @@ run reddy/adminmng.py
 
 run reddy/themes.py
 runadmin reddy/apps/testingChaimber.py
+boot
 screen 2

@@ -2,6 +2,7 @@ import traceback
 
 import data, lookup
 import pygameextra as pe
+import pygame.gfxdraw
 import os
 import time
 import importlib.util
@@ -73,11 +74,10 @@ def decript(key, lock):
 def gMS():
     global data
     data.display_rect = pe.display.display_reference.rect
-    data.centerTSX = pe.TSX(data.display_rect.center, data.display_rect.width // 25)
+    if data.centerTSX:
+        data.centerTSX.position = data.display_rect.center
 
 
-pe.display.make((0, 0), "REDdyOS", 2)
-gMS()
 data.files = str(os.path.realpath(__file__)).replace("start.pyw", 'system/')
 print(data.files)
 f = open(data.files + "startup.sys")
@@ -353,9 +353,14 @@ def oper(x):
     elif x[0] == "focus":
         data.focus = x[1]
 
+def points_around(length, points, point):
+    amount = length // points
+    return list(range(point-length//2, point+length//2, amount))
 
 def boot_animation(color):
-    points = [data.centerTSX[rotation] for rotation in (0, 90, 180, 270)]
+    rotations_matrix = [points_around(5, 5, point) for point in (0, 90, 180, 270)]
+    rotations = [rotation for rotations in rotations_matrix for rotation in rotations]
+    points = [data.centerTSX[rotation] for rotation in rotations]
     eye_points = [pe.math.lerp_legacy(
         data.display_rect.center,
         data.centerTSX[rotation + 45],
@@ -365,8 +370,16 @@ def boot_animation(color):
     for eye_point in eye_points:
         pe.draw.circle(pe.colors.black, eye_point, data.display_rect.width / 120, 0)
 
+def normalize_rotation(rotation):
+    normalized_rotation = int(rotation) % 360
+    if normalized_rotation < 0:
+        normalized_rotation += 360
+    return normalized_rotation
 
-pe.display.make(pe.display.get_max(), "REDdyOS", 1)
+
+pe.display.make(pe.display.get_max(), "REDdyOS", pe.display.DISPLAY_MODE_FULLSCREEN)
+gMS()
+data.centerTSX = pe.TSX(data.display_rect.center, data.display_rect.width // 25, 225)
 
 # section Main loop
 while True:
@@ -397,14 +410,15 @@ while True:
     runallm()
     if data.screen == 0:
         pe.fill.full((20, 20, 20))
-
         try:
             if startup[startupI] == "boot":
                 data.centerTSX.offset = int(data.centerTSX.offset)
-                if int(data.centerTSX.offset / 45) - data.centerTSX.offset / 45 != 0:
+
+                if normalize_rotation(data.centerTSX.offset) != 315:
                     boot_animation(data.red)
                     data.centerTSX.offset += 1
                 else:
+                    data.centerTSX.radius += 10
                     boot_animation(data.red)
                     pe.display.update()
                     time.sleep(1)
@@ -431,14 +445,9 @@ while True:
                 oper(data.operations[0])
                 del data.operations[0]
             traceback.print_exc()
-    elif data.screen == 1:
-        runall(1)
-    elif data.screen == 2:
-        runall(2)
-    elif data.screen == 3:
-        runall(3)
-    elif data.screen == 4:
-        runall(4)
+    elif 1 <= data.screen <= 4:
+        runall(data.screen)
+
     endallm()
     pe.display.update()
     pe.time.tick(data.fps)
