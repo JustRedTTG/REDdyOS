@@ -28,7 +28,7 @@ def draw():
     x = 0
     for app in data.apps:
       try:
-        background = app[3].commons.background
+        background = app[3].commons['background']
       except:
         background = False
       if app[0] != "desktop" and app[0] != "tskBAR" and not background:

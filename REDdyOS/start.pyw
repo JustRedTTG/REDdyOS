@@ -1,6 +1,6 @@
 import traceback
 
-import data
+import data, lookup
 import pygameextra as pe
 import os
 import time
@@ -85,7 +85,7 @@ f.seek(0)
 startup = f.read().splitlines()
 startupI = 0
 log = True
-logall = False
+logall = True
 crashlog = True
 
 
@@ -98,8 +98,8 @@ def open_module(spath: str):
 
 
 def run(spath, user="", dataV=None):
-    module, module_type = open_module(spath)
     global data, lookup, fk, key
+    module, module_type = open_module(spath)
     if module_type == "module":
         name = module.init(data, lookup)
         if name == "adminmng":
@@ -141,74 +141,6 @@ def run_admin(spath, user=""):
         data.focus = name
         if logall:
             print("[admin] run app", name, user)
-
-
-class lookup():
-    mod = []
-    mod2 = []
-    library = [
-        ["darken", "reddy/darken.py"],
-        ["clock", "reddy/clock.py"],
-        ["key", "reddy/key.py"],
-        ["mouse", "reddy/mouse.py"],
-        ["tokenmng", "reddy/tokenmng.py"],
-        ["tstr", "reddy/tuplestring.py"],
-        ["stgmng", "reddy/stgmng.py"],
-        ["usrmng", "reddy/usrmng.py"],
-        ["iconmng", "reddy/iconmng.py"],
-        ["EZtext", "reddy/easytext.py"],
-        ["adminmng", "reddy/adminmng.py"],
-        ["DrawATheme", "reddy/themes.py"],
-        ["FHost", "reddy/framehost.py"],
-        ["hcircle", "reddy/halfcircle.py"],
-        ["EZdrag", "reddy/easydrags.py"],
-        ["tskBAR", "reddy/taskbar.py"],
-        ["settings", "reddy/apps/settings.py"],
-        ["circlepfp", "reddy/circlepfp.py"],
-        ["lighten", "reddy/lighten.py"],
-        ["downFile", "reddy/downFile.py"],
-        ["alpha", "reddy/alpha.py"],
-        ["EZimage", "reddy/easyImage.py"],
-    ]
-
-    def get(moduleN):
-        # print("LOOKUP get module",moduleN)
-        global mod, library
-        for x in mod:
-            if x[0] == moduleN:
-                return x[1]
-        for mods in lookup.library:
-            if mods[0] == moduleN:
-                run(data.files + mods[1], "*LookUP*")
-                return lookup.get(moduleN)
-        pe.fill.full(data.red)
-        pe.display.update()
-        print("couldn't find " + moduleN)
-        pe.error("Module error!")
-
-    def getapp(appN):
-        if appN == "NONE" or appN == "":
-            return
-        global mod2
-        for x in mod2:
-            if x[0] == appN:
-                return x[3]
-        for mods in lookup.library:
-            if mods[0] == appN:
-                run(data.files + mods[1], "*LookUP*")
-                return lookup.getapp(appN)
-        pe.fill.full(data.red)
-        pe.display.update()
-        print("couldn't find " + appN)
-        pe.error("App error!")
-
-    def set(nm):
-        global mod
-        mod = nm
-
-    def setapp(nm):
-        global mod2
-        mod2 = nm
 
 
 class adminoper:
@@ -276,69 +208,60 @@ class adminoper:
 
 def runall(target_screen):
     global data, fk, adminoper
-    atr = []
+
+    # TODO: might only need this when switching focus or opening a new app, not every frame
     for app_name, app in data.apps.items():
-        if app['screen'] == target_screen:
-            atr.append(app)
         if app_name == data.focus:
             app['focus'] = 0
         else:
             app['focus'] += 1
-    app = 0
-    prioritized_apps = 0
-    allpon = []
+    atr = [item for item in data.apps.items() if item[1]['screen'] == target_screen]
+    all_priorities = []
     highest_focus = 0
-    for app in atr:
+    for _, app in atr:
         highest_focus = max(app['focus'], highest_focus)
-        allpon.append(app['focus'])
-    allpon = sorted(allpon)
-    pi = len(allpon) - 1
+        all_priorities.append(app['focus'])
+    all_priorities = sorted(all_priorities)
     fsort = []
-    if len(allpon) > 0:
-        while pi >= 0:
-            for app in atr:
-                if app['focus'] == allpon[pi]:
-                    fsort.append(app)
-                    pi -= 1
+    if len(all_priorities) > 0:
+        for i in range(len(all_priorities)):
+            fsort.extend([item for item in atr if item[1]['focus'] == all_priorities[i]])
     psort = [[], [], [], [], [], [], [], [], [], [], []]
-    for app in fsort:
-        psort[app['priority']].append(app)
-    for prioritized_apps in psort:
-        for app in prioritized_apps:
-            if app["admin"] != None:
-                app = 0
-                for app in data.apps:
-                    if app[0] == app[0]:
-                        ll = ((app[5][1] * math.pi) / (app + 1))
-                        if decript(ll, app[5][0]) == fk:
-                            app[3].admincall(adminoper)
-                        # else:
-                        # print("decript:",decript(ll,item[5][0]),"fk:",fk,"d key:",ll,"o key:",key/math.pi)
-                    else:
-                        app += 1
+    for item in fsort:
+        try:
+            psort[item[1]['priority']].append(item)
+        except IndexError:
+            pass
+    for prioritized_apps in psort:  # Per priority
+        for name, app in prioritized_apps:  # Per app in priority
+            if app["admin"] is None:
+                ll = ((app['admin'][1] * math.pi) / (app['admin_key'] + 1))
+                if decript(ll, app['admin'][0]) == fk:
+                    app['module'].admincall(adminoper)
             if not crashlog:
                 try:
-                    if logall and app[3].draw != None:
-                        print("DRAW call to", app[0])
+                    if logall and app['module'].draw is None:
+                        print(f"DRAW call to {name}")
                     app[3].draw()
                 except:
-                    data.operations.append("close " + app[0])
+                    data.operations.append(f"close {name}")
             else:
                 if logall:
-                    print("DRAW call to", app[0])
-                app[3].draw()
+                    print(f"DRAW call to {name}")
+                app['module'].draw()
 
 
 def runallm():
-    global data
-    for m in data.m:
+    for name, module in data.m.items():
         try:
-            if logall and m[1].call != None:
-                print("module call to", m[0])
-                d = data.operations
-            m[1].call()
-        except:
+            if logall and module.call is not None:
+                print(f"module call to {name}")
+            module.call()
+        except AttributeError:
             pass
+        except:
+            if crashlog:
+                traceback.print_exc()
 
 
 def endallm():
@@ -360,21 +283,14 @@ def endallm():
 
 
 def closeApp(app, user=""):
-    if app != "":
+    try:
+        del data.apps[app]
+        data.focus = ""
         if logall:
             print("close app", app, user)
-        i = 0
-        while i < len(data.apps):
-            if data.apps[i][0] == app:
-                # print("located at",i)
-                del data.apps[i]
-                data.focus = ""
-                return
-            else:
-                # print("not at", i, data.apps[i][0])
-                pass
-            i += 1
-        # pe.error("couldn't close the app")
+
+    except KeyError:
+        pass
 
 
 def closeModule(app, user=""):
@@ -437,9 +353,8 @@ def boot_animation(color):
 
 pe.display.make(pe.display.get_max(), "REDdyOS", 1)
 
+# section Main loop
 while True:
-    lookup.set(data.m)
-    lookup.setapp(data.apps)
     gMS()
     data.events = pe.event.get()
     if data.resetDis != None:
