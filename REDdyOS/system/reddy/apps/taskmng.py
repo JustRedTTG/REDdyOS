@@ -35,25 +35,25 @@ def draw():
     pe.button.rect((0,0,50,20),(255,255,255),(200,200,200),Text=ezt.size("apps",pe.colors.black,(0,0,50,20),10),action=setpage, data=0)
   else:
     pe.draw.rect((200,200,200),(0,0,50,20),0)
-    pe.text.display(ezt.size("apps",pe.colors.black,(0,0,50,20),10))
+    ezt.size("apps",pe.colors.black,(0,0,50,20),10).display()
   if page != 1:
     pe.button.rect((50,0,50,20),(255,255,255),(200,200,200),Text=ezt.size("modules",pe.colors.black,(50,0,50,20),10),action=setpage, data=1)
   else:
     pe.draw.rect((200,200,200),(50,0,50,20),0)
-    pe.text.display(ezt.size("modules",pe.colors.black,(50,0,50,20),10))
+    ezt.size("modules",pe.colors.black,(50,0,50,20),10).display()
 
 
   y=22
   if page == 0:
     for app in data.apps:
       name = app[0]
-      pe.text.display(ezt.align.topleft(ezt.size(name,pe.colors.black,(0,y,0,10),7)))
+      ezt.align.topleft(ezt.size(name,pe.colors.black,(0,y,0,10),7)).display()
       pe.button.rect((commons.window_size[0]-100,y,100,10),pe.colors.red,pe.colors.pink,action=close,data=name)
       y+=12
   elif page == 1:
     for m in data.m:
       name = m[0]
-      pe.text.display(ezt.align.topleft(ezt.size(name,pe.colors.black,(0,y,0,10),7)))
+      ezt.align.topleft(ezt.size(name,pe.colors.black,(0,y,0,10),7)).display()
       pe.button.rect((commons.window_size[0]-100,y,100,10),pe.colors.red,pe.colors.pink,action=stop,data=name)
       y+=12
   framehost.exit(FID)

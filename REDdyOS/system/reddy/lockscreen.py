@@ -93,7 +93,7 @@ def draw():
     timeT.original_pos = pe.math.center((0, data.display_rect.center[1], data.display_rect.center[0]/2, data.display_rect.height/2))
     timeT.fontsize = int(data.display_rect.width/20)
     timeT.init(timeT)
-    pe.text.display(timeT)
+    timeT.display()
     if keyM.space() or mouseM.left() or mouseM.right() or mouseM.middle():
       openUP()
   elif d<data.display_rect.height:
@@ -107,9 +107,9 @@ def draw():
     s = pe.Surface((rect[2], rect[3]))
     s.set_alpha((d/50)*(data.display_rect.height/100))
     s.fill((0, 0, 0))
-    pe.display.blit.rect(s, (rect[0], rect[1]))
+    pe.display.blit(s, (rect[0], rect[1]))
 
-    pe.text.display(timeT)
+    timeT.display()
   else:
     um = lookup.get("usrmng")
     tm = lookup.get("tokenmng")
@@ -118,7 +118,7 @@ def draw():
     s = pe.Surface((rect[2], rect[3]))
     s.set_alpha(100)
     s.fill((0, 0, 0))
-    pe.display.blit.rect(s, (rect[0], rect[1]))
+    pe.display.blit(s, (rect[0], rect[1]))
 
     #pe.draw.circle(pe.colors.white,(data.display_rect.center[0],data.display_rect.center[1]-int(data.display_rect.height / 4)),int(data.display_rect.width / 12),0)
     user = um.load.user(tm.current_user)
@@ -130,6 +130,6 @@ def draw():
     nameT.original_pos = data.display_rect.center
     nameT.init(nameT)
     nameT.fontsize = int(data.display_rect.width / 20)
-    pe.text.display(nameT)
+    nameT.display()
     if localSettings.lock == 0:
       pe.button.rect((data.display_rect.center[0]-int(data.display_rect.width / 10/2),data.display_rect.center[1]+int(data.display_rect.width / 20/2),int(data.display_rect.width / 10),int(data.display_rect.width / 35)),(200,200,200),(100,100,100),text,action=unlock)

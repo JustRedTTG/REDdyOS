@@ -12,4 +12,4 @@ def alpha(color,aplha,rect):
   s = pe.Surface((rect[2], rect[3]))
   s.set_alpha(aplha)
   s.fill(color)
-  pe.display.blit.rect(s, (rect[0], rect[1]))
+  pe.display.blit(s, (rect[0], rect[1]))

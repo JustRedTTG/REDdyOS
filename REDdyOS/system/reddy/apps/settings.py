@@ -72,7 +72,7 @@ def draw():
     s = pe.Surface((rect[2], rect[3]))
     s.set_alpha(100)
     s.fill((0, 0, 0))
-    pe.display.blit.rect(s, (rect[0], rect[1]))
+    pe.display.blit(s, (rect[0], rect[1]))
   #pe.draw.rect(pe.colors.pink,(250,25,data.display_rect.width,data.display_rect.height),15)
   data.mS = pe.display.get.size()
   data.display_rect.center = (data.display_rect.width / 2, data.display_rect.height / 2)
@@ -144,8 +144,8 @@ def draw():
       pe.draw.rect(data.red4, (0, y, data.display_rect.width, ic), 0)
       #
       pe.display.context(screenS)
-      pe.display.blit.rect(smallT,(250+10,25+10))
-      pe.display.blit.rect(smallT2,(250+175+30,25+10))
+      pe.display.blit(smallT,(250+10,25+10))
+      pe.display.blit(smallT2,(250+175+30,25+10))
       x=255
       pe.button.rect((x,205,50,50),pe.colors.white,(200,200,200),action=setcolors,data=0)
       pe.draw.rect(pe.colors.red,(x+5,210,40,40),0)

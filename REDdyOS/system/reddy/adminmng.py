@@ -75,28 +75,26 @@ def call():
     if data.screen == 3:
         if admin != None:
             lookup.get("mouse").remove_offset()
-            s = pe.Surface((data.display_rect.width, data.display_rect.height))
-            s.set_alpha(200)
-            s.fill((0, 0, 0))
-            rect = (data.display_rect.width / 2 - 225, data.display_rect.height / 2 - 125, 450, 250)
-            pe.pygame.draw.rect(s, (255, 255, 255), rect, 0)
             lookup.get("DrawATheme").draw()
-            pe.display.blit.rect(s, (0, 0))
+            ezr = lookup.get("EZround")
+            pe.fill.transparency((0, 0, 0), 200)
+            popup_rect = (data.display_rect.width / 2 - 225, data.display_rect.height / 2 - 125, 450, 250)
+            pe.draw.polygon((255, 255, 255, 200), ezr.round_rect(popup_rect, 10), 0)
             try:
-                icon = lookup.getapp(admin).commons.icon
-            except:
+                icon = lookup.getapp(admin).commons['icon']
+            except KeyError:
                 icon = data.files + "reddy/icons/admin.png"
             lookup.get("EZimage").image(icon, (150, 150),
                                         (data.display_rect.width / 2 - 225, data.display_rect.height / 2 - 125))
             ezt = lookup.get("EZtext")
             try:
-                title = lookup.getapp(admin).commons.title
-            except:
+                title = lookup.getapp(admin).commons['title']
+            except KeyError:
                 title = admin
-            pe.text.display(ezt.cram(title, pe.colors.black,
-                                     (data.display_rect.width / 2 - 75, data.display_rect.height / 2 - 100, 300, 25)))
-            pe.text.display(ezt.fit("Wants admin privileges", pe.colors.black,
-                                    (data.display_rect.width / 2 - 75, data.display_rect.height / 2 - 75, 300, 25)))
+            ezt.cram(title, pe.colors.black,
+                     (data.display_rect.width / 2 - 75, data.display_rect.height / 2 - 100, 300, 25)).display()
+            ezt.fit("Wants admin privileges", pe.colors.black,
+                    (data.display_rect.width / 2 - 75, data.display_rect.height / 2 - 75, 300, 25)).display()
             pe.button.rect((data.display_rect.width / 2 - 225, data.display_rect.height / 2 + 90, 225, 35),
                            pe.colors.red, (255, 50, 50), action=declineapp, data=admin)
             pe.button.rect((data.display_rect.width / 2 + 225 - 35, data.display_rect.height / 2 - 125, 35, 35),

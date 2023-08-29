@@ -50,7 +50,7 @@ def drawIcon(rect,file,window_pos=(0,0),icon=None):
   else:
     s.set_alpha(0)
     s.fill((255, 255, 255))
-  pe.display.blit.rect(s, (rect[0], rect[1]))
+  pe.display.blit(s, (rect[0], rect[1]))
   textRect = (rect[0],rect[1]+rect[3]-20,rect[2],20)
   iconSize = rect[3]-20
   iconPos = (rect[0]+rect[2]/2-iconSize/2,rect[1])

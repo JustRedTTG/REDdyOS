@@ -18,7 +18,7 @@ import socket
 data.m = {"PGE": pe, "os": os, "time": time, "importlib.util": importlib.util, "math": math,
           "random": random, "PIL.Image": Image, "PIL.ImageDraw": ImageDraw, "numpy": numpy,
           "_thread": _thread, "requests": requests, "zipfile": zipfile, "socket": socket}
-commons = data.m.keys()
+commons = (*data.m.keys(), 'adminmng')
 pe.init()
 
 m = [''] * 20
@@ -72,7 +72,6 @@ def decript(key, lock):
 
 
 def gMS():
-    global data
     data.display_rect = pe.display.display_reference.rect
     if data.centerTSX:
         data.centerTSX.position = data.display_rect.center
@@ -107,7 +106,6 @@ def add_app(name, priority, screen, module, admin: bool = False):
 
 
 def run(spath, user="", dataV=None):
-    global data, lookup, fk, key
     module, module_type = open_module(spath)
     if module_type == "module":
         name = module.init(data, lookup)
@@ -135,10 +133,9 @@ def run(spath, user="", dataV=None):
 
 def run_admin(spath, user=""):
     module, type = open_module(spath)
-    global data, lookup, fk, key
     if type == "app":
         name, priority, screen = module.init(data, lookup)
-        for app_name, _ in data.apps.items():
+        for app_name, _ in tuple(data.apps.items()):
             if app_name == name:
                 return
         add_app(name, priority, screen, module, admin=True)
@@ -149,35 +146,26 @@ def run_admin(spath, user=""):
 
 class adminoper:
     @staticmethod
-    def close(app):
-        if app != "":
+    def close(appname):
+        if not appname: return
+        try:
+            del data.apps[appname]
+            data.focus = ""
             if logall:
-                print("[admin] close app", app)
-            i = 0
-            while i < len(data.apps):
-                if data.apps[i][0] == app:
-                    del data.apps[i]
-                    data.focus = ""
-                    lookup.get("framehost").remove(app)
-                    return
-                else:
-                    pass
-                i += 1
+                print("[admin] close app", appname)
+        except KeyError:
+            pass
 
     @staticmethod
-    def stop(app):
+    def stop(module_name):
         global commons
-        if app != "" and not app in commons:
+        if not module_name or module_name in commons: return
+        try:
+            del data.m[module_name]
             if logall:
-                print("[admin] stop module", app)
-            i = 0
-            while i < len(data.m):
-                if data.m[i][0] == app:
-                    del data.m[i]
-                    return
-                else:
-                    pass
-                i += 1
+                print("[admin] stop module", module_name)
+        except KeyError:
+            pass
 
     @staticmethod
     def change_app(appname, new):
@@ -219,15 +207,14 @@ class adminoper:
 
 
 def runall(target_screen):
-    global data, fk, adminoper
 
     # TODO: might only need this when switching focus or opening a new app, not every frame
-    for app_name, app in data.apps.items():
+    for app_name, app in tuple(data.apps.items()):
         if app_name == data.focus:
             app['focus'] = 0
         else:
             app['focus'] += 1
-    atr = [item for item in data.apps.items() if item[1]['screen'] == target_screen]
+    atr = [item for item in tuple(data.apps.items()) if item[1]['screen'] == target_screen]
     all_priorities = []
     highest_focus = 0
     for _, app in atr:
@@ -264,23 +251,26 @@ def runall(target_screen):
 
 
 def runallm():
-    for name, module in data.m.items():
+    for name, module in tuple(data.m.items()):
         try:
             if name == 'adminmng' and data.screen != 0:
                 module.admincall(adminoper)
                 print(f"ADMINMNG granted")
+        except:
+            pass
+        try:
             module.call()
             if logall:
                 print(f"module call to {name}")
-        except AttributeError:
-            pass
+        except AttributeError as e:
+            if not 'call' in str(e) and crashlog:
+                traceback.print_exc()
         except:
             if crashlog:
                 traceback.print_exc()
 
 
 def endallm():
-    global data
     for m in data.m:
         try:
             if logall and m[1].beforeendcall != None:
@@ -353,9 +343,11 @@ def oper(x):
     elif x[0] == "focus":
         data.focus = x[1]
 
+
 def points_around(length, points, point):
     amount = length // points
-    return list(range(point-length//2, point+length//2, amount))
+    return list(range(point - length // 2, point + length // 2, amount))
+
 
 def boot_animation(color):
     rotations_matrix = [points_around(5, 5, point) for point in (0, 90, 180, 270)]
@@ -369,6 +361,7 @@ def boot_animation(color):
     pe.draw.polygon(color, points)
     for eye_point in eye_points:
         pe.draw.circle(pe.colors.black, eye_point, data.display_rect.width / 120, 0)
+
 
 def normalize_rotation(rotation):
     normalized_rotation = int(rotation) % 360
@@ -429,7 +422,11 @@ while True:
             elif startup[startupI].split(" ")[0] == "run":
                 boot_animation(data.red)
                 data.centerTSX.offset += 1.5
-                run(data.files + startup[startupI].split(" ")[1], "*STARTUP*")
+                module_name = startup[startupI].split(" ")[1]
+                if module_name in lookup.library.keys():
+                    run(data.files + lookup.library[module_name], "*STARTUP*")
+                else:
+                    run(data.files + module_name, "*STARTUP*")
                 startupI += 1
             elif startup[startupI].split(" ")[0] == "runadmin":
                 boot_animation(pe.colors.aqua)

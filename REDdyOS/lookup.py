@@ -22,6 +22,8 @@ library = {
     "lighten": "reddy/lighten.py",
     "downFile": "reddy/downFile.py",
     "alpha": "reddy/alpha.py",
+    "tuplestring": "reddy/tuplestring.py",
+    "themes": "reddy/themes.py",
 
     "EZimage": "reddy/easy_image.py",
     "EZtext": "reddy/easy_text.py",
@@ -41,16 +43,15 @@ def get(moduleN):
         return get(moduleN)
     pe.fill.full(data.red)
     pe.display.update()
-    print(f"couldn't find module {moduleN}")
-    exit()
+    raise LookupError(f"couldn't find module {moduleN}")
 
 
 def getapp(appN):
-    if appN == "NONE" or appN == "":
+    if appN == "NONE" or not appN:
         return
     app = data.apps.get(appN)
     if app is not None:
-        return app
+        return app['module']
     app_file = library.get(appN)
     if app_file:
         main.run(data.files + app_file, "*LookUP*")
@@ -58,4 +59,4 @@ def getapp(appN):
     pe.fill.full(data.red)
     pe.display.update()
     print(f"couldn't find app {appN}")
-    exit()
+    return None

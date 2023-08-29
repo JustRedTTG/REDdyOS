@@ -59,7 +59,7 @@ def beforeendcall():
     #  if not app in appsThis:
     #    draw(app)
     #    pos = apps[app][1].window_pos
-    #    pe.display.blit.rect(apps[app][3], (pos[0], pos[1] + TOP_HEIGHT))
+    #    pe.display.blit(apps[app][3], (pos[0], pos[1] + TOP_HEIGHT))
     appsThis = []
 
 

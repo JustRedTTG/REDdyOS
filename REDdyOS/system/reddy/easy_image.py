@@ -18,9 +18,9 @@ lib = []
 
 def place(core=-1, pos=(0, 0)):
     if core > -1:
-        pe.display.blit.rect(lib[core][2], pos)
+        pe.display.blit(lib[core][2], pos)
     else:
-        pe.display.blit.rect(lib[len(lib) - 1][2], pos)
+        pe.display.blit(lib[len(lib) - 1][2], pos)
 
 
 def get(core):
