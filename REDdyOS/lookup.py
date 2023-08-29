@@ -23,10 +23,10 @@ library = {
     "downFile": "reddy/downFile.py",
     "alpha": "reddy/alpha.py",
 
-    "EZimage": "reddy/easyImage.py",
-    "EZtext": "reddy/easytext.py",
-    "EZround": "reddy/roundness.py",
-    "EZdrag": "reddy/easydrags.py",
+    "EZimage": "reddy/easy_image.py",
+    "EZtext": "reddy/easy_text.py",
+    "EZround": "reddy/easy_round.py",
+    "EZdrag": "reddy/easy_drags.py",
 }
 
 
