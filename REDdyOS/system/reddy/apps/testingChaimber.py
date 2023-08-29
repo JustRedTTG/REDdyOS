@@ -1,4 +1,4 @@
-data, lookup, os, pe, commons, framehost, FID, admin = None, None, None, None, None, None, None, None
+data, lookup, os, pe, commons, framehost, frame, admin = None, None, None, None, None, None, None, None
 
 
 def verify():
@@ -6,7 +6,7 @@ def verify():
 
 
 def init(dataV, lookupV):
-    global data, lookup, os, commons, pe, framehost, FID
+    global data, lookup, os, commons, pe, framehost, frame
     data = dataV
     lookup = lookupV
     commons = {
@@ -19,7 +19,7 @@ def init(dataV, lookupV):
     os = lookup.get("os")
     pe = lookup.get("PGE")
     framehost = lookup.get("FHost")
-    FID = framehost.setup("tch", commons)
+    frame = framehost.Frame("tch", commons)
     return "tch", 8, 2
 
 
@@ -69,14 +69,15 @@ def kill():
 
 
 def draw():
-    if enable:
+    if not enable: return
+    with frame:
         global ctext, show, admin
-        framehost.draw(FID)
-        framehost.screen(FID)
         mouse = lookup.get("mouse")
+        window_position = mouse.Wpos()
         pe.fill.full(pe.colors.white)
         pe.draw.circle(pe.colors.red, mouse.pos(), 5, 0)
-        pe.draw.circle(pe.colors.green, mouse.Wpos(), 5, 0)
+        pe.draw.line(pe.colors.green, (0, window_position[1]), (frame.window_size[0], window_position[1]), 5, 0)
+        pe.draw.line(pe.colors.green, (window_position[0], 0), (window_position[0], frame.window_size[1]), 5, 0)
         pe.button.rect((0, 0, 50, 50), pe.colors.red, pe.colors.blue, action=reboot)
         pe.button.rect((100, 0, 50, 50), pe.colors.red, pe.colors.blue, action=kill)
         if not lookup.get("adminmng").check("tch"):
@@ -95,5 +96,4 @@ def draw():
                 show = True
         else:
             pe.text.display(lookup.get("EZtext").size(ctext['text'], pe.colors.black, (0, 100, 200, 25)))
-        framehost.exit(FID)
         admin = None

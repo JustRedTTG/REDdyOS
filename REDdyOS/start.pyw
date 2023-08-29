@@ -85,7 +85,7 @@ f.seek(0)
 startup = f.read().splitlines()
 startupI = 0
 log = True
-logall = True
+logall = False
 crashlog = True
 
 
